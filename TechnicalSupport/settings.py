@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
     'ordermanager',
 ]
 
@@ -74,12 +75,23 @@ WSGI_APPLICATION = 'TechnicalSupport.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'UtSistemaSolicitudes',
+            'USER': 'UtSistemaSolicitudes',
+            'PASSWORD':'##sistemas##',
+            'HOST': '127.0.0.1',
+        }
+    }
 
 
 # Password validation
@@ -106,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Hermosillo'
 
 USE_I18N = True
 
@@ -119,3 +131,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'ordermanager/static'),
+]
+
+MEDIA_URL = '/media/'
+
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    MEDIA_ROOT = '/usr/share/nginx/ordermanager/media/'
+    STATIC_ROOT = '/usr/share/nginx/ordermanager/static/'
+
+LOGIN_URL = '/ordermanager/login/'
+LOGIN_REDIRECT_URL = '/ordermanager/'
+
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'prueba@gmail.com'
+EMAIL_HOST_PASSWORD = 'prueba'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'UTSLRC <prueba@gmail.com>'
+
+
+ADMINS = (
+    ('Carlos Iturrios', 'c.iturriosalcaraz@gmail.com'),
+)

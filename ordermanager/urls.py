@@ -12,5 +12,9 @@ urlpatterns = [
 
     # App views    
    	url(r'^$', views.principal, name='principal'),
-   	
+   	url(r'^$', views.createOrder, name='createOrder'),
+   	url(r'^$', views.dashboard, name='dashboard'),
+   	url(r'^$', views.orderPending, name='orderPending'),
+   	url(r'^$', views.orderSupport, name='orderSupport'),
+   	url(r'^$', views.poll, name='poll'),
 ]

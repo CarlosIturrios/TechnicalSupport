@@ -17,3 +17,23 @@ from datetime import datetime
 # Create your views here.
 def principal(request):
 	return render(request, 'principal.html')
+
+
+def principal(request):
+	return render(request, 'createOrder.html')
+
+
+def principal(request):
+	return render(request, 'dashboard.html')
+
+
+def principal(request):
+	return render(request, 'orderPending.html')
+
+
+def principal(request):
+	return render(request, 'orderSupport.html')
+
+
+def principal(request):
+	return render(request, 'poll.html')

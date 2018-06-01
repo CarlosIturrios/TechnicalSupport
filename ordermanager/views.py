@@ -19,21 +19,21 @@ def principal(request):
 	return render(request, 'principal.html')
 
 
-def principal(request):
+def createOrder(request):
 	return render(request, 'createOrder.html')
 
 
-def principal(request):
+def dashboard(request):
 	return render(request, 'dashboard.html')
 
 
-def principal(request):
+def orderPending(request):
 	return render(request, 'orderPending.html')
 
 
-def principal(request):
+def orderSupport(request):
 	return render(request, 'orderSupport.html')
 
 
-def principal(request):
+def poll(request):
 	return render(request, 'poll.html')

@@ -13,10 +13,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 from datetime import datetime
+from .models import Request
 
 # Create your views here.
 def principal(request):
-	return render(request, 'principal.html')
+	requests = Request.objects.filter(user=request.user)
+	return render(request, 'principal.html', {'requests':requests})
 
 
 def createOrder(request):

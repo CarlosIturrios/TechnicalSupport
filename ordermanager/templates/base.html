@@ -1,130 +1,194 @@
 {% load static %}
 <!DOCTYPE html>
-	<html lang="zxx" class="no-js">
-	<head>
-		<!-- Mobile Specific Meta -->
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Favicon-->
-		<link rel="shortcut icon" href="{% static 'img/elements/fav.png' %}">
-		<!-- Author Meta -->
-		<meta name="author" content="colorlib">
-		<!-- Meta Description -->
-		<meta name="description" content="">
-		<!-- Meta Keyword -->
-		<meta name="keywords" content="">
-		<!-- meta character set -->
-		<meta charset="UTF-8">
-		<!-- Site Title -->
-		<title>UT Technical support!</title>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
-			<!--
-			CSS
-			============================================= -->
-			<link rel="stylesheet" href="{% static 'css/linearicons.css' %}">
-			<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-			<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-			<link rel="stylesheet" href="{% static 'css/nice-select.css' %}">			
-			<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-			<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-			<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	</head>
-	<body>
+    <title>Technical Support | UtSlrc</title>
 
-		<header id="header" id="home">
-			<div class="container">
-		    	<div class="row align-items-center justify-content-between d-flex">
-			    	<div id="logo">
-			    		<a href="#">
-			    			<img src="{% static 'img/tics.png' %}" class="img-responsive" height="90" width="120" style="margin: -8px; font-size: 25px;">     
-			    			<strong style="color: white;">  Technical support!</strong>
-			    		</a>
-			      	</div>
-			      	<nav id="nav-menu-container">
-			        	<ul class="nav-menu">
-			          		<li class="menu-active"><a href="index.html#home">Home</a></li>
-			          		<li><a href="#">Generate a new Order</a></li>
-			          		<li><a href="#">View Orders Pendding</a></li>
-			          		<li><a href="#">Dashboard</a></li>
-			          		<li class="menu-has-children"><a href="">{{user.username}}</a>
-			            		<ul>
-			              			<li><a href="{% url 'ordermanager:logout' %}">LogOut</a></li>
-			            		</ul>
-			          		</li>
-				      		<li><a class="ticker-btn" href="#">Get Started</a></li>						          
-			        	</ul>
-			      	</nav><!-- #nav-menu-container -->		    		
-		    	</div>
-			</div>
-		</header>
-		<!-- #header -->
-		{% block 'main' %}
-		{% endblock %}		
-		<!-- BASE -->		
-		<footer class="footer-area section-gap">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-5 col-md-6 col-sm-6">
-						<div class="single-footer-widget">
-							<h6>About Us</h6>
-							<p>
-								It is a proyect by the school
-							</p>
-							<p class="footer-text">									
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made by <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank"> Carlos Iturrios </a>
-							</p>	
-						</div>
-					</div>
-					<div class="col-lg-5  col-md-6 col-sm-6">
-						<div class="single-footer-widget">
-								<div class="" id="mc_embed_signup">
-									<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
-										<h6>Newsletter
-											<input class="form-control" name="message" placeholder="Comments">
-										</h6>																				
-										<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
-			                            	<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
-			                            	<div style="position: absolute; left: -5000px;">
-												<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-											</div>
+    <!-- Bootstrap -->
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+	
+    <!-- bootstrap-progressbar -->
+    <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 
-										<div class="info"></div>
-									</form>
-								</div>
-							</div>
-						</div>						
-						<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
-							<div class="single-footer-widget">
-								<h6>Follow Us</h6>
-								<p>Let us be social</p>
-								<div class="footer-social d-flex align-items-center">
-									<a href="#"><i class="fa fa-facebook"></i></a>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-									<a href="#"><i class="fa fa-dribbble"></i></a>
-									<a href="#"><i class="fa fa-behance"></i></a>
-								</div>
-							</div>
-						</div>							
-					</div>
-				</div>
-			</footer>	
-			<!-- End footer Area -->	
-			
-			<script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-			<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>			
-			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-  			<script src="{% static 'js/easing.min.js' %}"></script>			
-			<script src="{% static 'js/hoverIntent.js' %}"></script>
-			<script src="{% static 'js/superfish.min.js' %}"></script>	
-			<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
-			<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>	
-			<script src="{% static 'js/owl.carousel.min.js' %}"></script>			
-			<script src="{% static 'js/jquery.sticky.js' %}"></script>
-			<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>			
-			<script src="{% static 'js/parallax.min.js' %}"></script>	
-			<script src="{% static 'js/mail-script.js' %}"></script>				
-			<script src="{% static 'js/main.js' %}"></script>	
-		</body>
-	</html>
+    <!-- Custom Theme Style -->
+    <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+  </head>
 
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{% url 'ordermanager:principal' %}" class="site_title"><i class="fa fa-wrench"></i> <span>UTSLRC</span></a></a>
+            </div>
+
+
+            <br />
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>Technical Support!</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{% url 'ordermanager:principal' %}">Dashboard</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Generate a new Order <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="form.html">Maintenance of computer equipment</a></li>
+                      <li><a href="form_advanced.html">Software configuration</a></li>
+                      <li><a href="form_validation.html">Software installation</a></li>
+                      <li><a href="form_wizards.html">Computer consulting</a></li>
+                      <li><a href="form_upload.html">Audio</a></li>
+                      <li><a href="form_buttons.html">Events in general</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-desktop"></i>Order status <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      {% for request in requests %}
+                      <li><a>{{request}}</a></li>
+                      {% empty %}
+                      <li><a >No request pending</a></li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Orders pending <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="tables.html">Order panel</a><p>Enter to attend orders.</p> </li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="chartjs.html">Request</a><p>Dashboard</p></li>
+                      <li><a href="chartjs2.html">Poll</a><p>Dashboard</p></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                      <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">{{ user.get_full_name }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li>
+                      <a href="javascript:;">
+                        <i class="fa fa-user pull-right"></i> Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;">                        
+                        <span><i class="fa fa-cogs pull-right"></i>Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;"><i class="fa fa-question-circle pull-right"></i>Help</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'ordermanager:logout' %}">
+                        <i class="fa fa-sign-out pull-right"></i> Log Out
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+        <!-- page content -->
+        {% block 'main' %}
+        {% endblock %}  
+        <!-- /page contenet -->
+         <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Web application was made <i class="fa fa-user" aria-hidden="true"></i> by <a>Carlos Iturrios</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
+    <!-- Chart.js -->
+    <script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
+    <!-- gauge.js -->
+    <script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- Skycons -->
+    <script src="{% static 'vendors/skycons/skycons.js' %}"></script>
+    <!-- Flot -->
+    <script src="{% static 'vendors/Flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'vendors/Flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'vendors/Flot/jquery.flot.time.js' %}"></script>
+    <script src="{% static 'vendors/Flot/jquery.flot.stack.js' %}"></script>
+    <script src="{% static 'vendors/Flot/jquery.flot.resize.js' %}"></script>
+    <!-- Flot plugins -->
+    <script src="{% static 'vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+    <script src="{% static 'vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+    <script src="{% static 'vendors/flot.curvedlines/curvedLines.js' %}"></script>
+    <!-- DateJS -->
+    <script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
+    <!-- JQVMap -->
+    <script src="{% static 'vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+    <script src="{% static 'vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+    <script src="{% static 'vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'build/js/custom.min.js' %}"></script>
+  
+  </body>
+</html>

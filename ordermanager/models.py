@@ -1,6 +1,141 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from os import path
 
 from django.db import models
+from django.contrib.auth.models import User
+
+def unique_file_path(instance, filename):	
+    base, ext = path.splitext(filename)
+    newname = "%s%s" % (instance.name, ext)
+    return path.join('equipment_img', newname)
+
 
 # Create your models here.
+class Equipment(models.Model):
+	name = models.CharField(max_length=200, null=False, blank=False)
+ 	location = models.CharField(max_length=200, null=False, blank=False)
+ 	responsible = models.ForeignKey(
+		User, null=False, blank=False, related_name='equipment_user_set', on_delete=models.PROTECT
+	)
+	image = models.ImageField(upload_to=unique_file_path, null=True, blank=False)	
+	inventory_type = models.CharField(
+		max_length=1, blank=False, default='1', choices=(
+			('1','Computer equipment'),
+			('2','Audio'),
+			('3','Video'),
+			('4','Cabling')
+		)
+	)
+	def __str__(self):
+		return 'Equipment: {0} '.format(self.name)
+
+class Request(models.Model):	
+	user = models.ForeignKey(
+		User, null=False, blank=False, related_name='request_user_set', on_delete=models.PROTECT
+	)
+	technical = models.ForeignKey(
+		User, null=False, blank=False, related_name='request_technical_set', on_delete=models.PROTECT
+	)
+	request_type = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Maintenance of computer equipment'),
+			('2','Software configuration'),
+			('3','Software installation'),
+			('4','Computer consulting'),
+			('3','Audio'),
+			('4','Events in general'),
+		)
+	)
+	equipment_id = models.ForeignKey(
+		Equipment, null=True, blank=True, related_name='equipment_set', on_delete=models.PROTECT
+	)
+	status = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Pennding'),
+			('2','on process'),
+			('3','Canceled'),
+			('4','Done'),
+		)
+	)
+	comments = models.CharField(max_length=200, null=True, blank=True)		
+	date_request = models.DateTimeField(null=False, blank=False, auto_now_add=True)
+	date_onprocess = models.DateTimeField(null=True, blank=True)
+	date_done = models.DateTimeField(null=True, blank=True)
+	date_cancel = models.DateTimeField(null=True, blank=True)
+	def __str__(self):
+		return 'Request N: {0} Status: {1} Request type: {2}'.format(self.id, self.get_status_display(), self.get_request_type_display())
+
+
+class Poll(models.Model):	
+	question = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Was it easy to request the service?'),
+		)
+	)
+ 	answer = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Very satisfied'),
+			('2','Satisfied'),
+			('3','Unsatisfied'),
+			('4','Very Unsatisfied'),
+		)
+	)
+	questionTwo = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','What was the quality of the service?'),
+		)
+	)
+ 	answerTwo = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Very satisfied'),
+			('2','Satisfied'),
+			('3','Unsatisfied'),
+			('4','Very Unsatisfied'),
+		)
+	)
+	questionThree = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','How do you feel about the behavior of the technician?'),
+		)
+	)
+ 	answerThree = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Very satisfied'),
+			('2','Satisfied'),
+			('3','Unsatisfied'),
+			('4','Very Unsatisfied'),
+		)
+	)
+	questionFour= models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','How do you feel about the service the technician performed?'),
+		)
+	)
+ 	answerFour = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Very satisfied'),
+			('2','Satisfied'),
+			('3','Unsatisfied'),
+			('4','Very Unsatisfied'),
+		)
+	)
+	questionFive= models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','What is yout level of satisfaction?'),
+		)
+	)
+ 	answerFive = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Very satisfied'),
+			('2','Satisfied'),
+			('3','Unsatisfied'),
+			('4','Very Unsatisfied'),
+		)
+	)	
+	request_id = models.ForeignKey(
+		Request, null=False, blank=True, related_name='request_set', on_delete=models.PROTECT
+	)
+
+	def __str__(self):
+		return 'Poll of the {0} '.format(self.request_id)

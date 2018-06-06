@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models import Q
 
 from datetime import datetime
 from .models import Request
@@ -18,8 +19,10 @@ from .models import Request
 # Create your views here.
 @login_required()
 def principal(request):
-	requests = Request.objects.filter(user=request.user)
-	return render(request, 'principal.html', {'requests':requests})
+	requests = Request.objects.filter(~Q(status='3'), user=request.user)
+	allrequests = Request.objects.filter(~Q(status='3'), ~Q(status='4'))[:5]
+	myrequests = Request.objects.filter(user=request.user).order_by('status').reverse()
+	return render(request, 'principal.html', {'requests':requests, 'allrequests':allrequests, 'myrequests':myrequests})
 
 
 @login_required()

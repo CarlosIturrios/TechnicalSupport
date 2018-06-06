@@ -4,79 +4,127 @@
 
 {% block 'main' %}
 <div class="right_col" role="main">
-	<div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Recent Activities <small>at the UT</small></h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>                    
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <div class="dashboard-widget-content">
-
-                    <ul class="list-unstyled timeline widget">
-                      <li>
-                        <div class="block">
-                          <div class="block_content">
-                            <h2 class="title">
-                            	<a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                            </h2>
-                            <div class="byline">
-                              <span>13 hours ago</span> by <a>Jane Smith</a>
-                            </div>
-                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="x_panel">
-               	<div class="x_title">
-                  <h2>Users comments <small><a href="">Do us a comment about the Web Page!</a></small></h2>
-                  <ul class="nav navbar-right panel_toolbox">                    
-                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>                   
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <ul class="list-unstyled msg_list">
-                    <li>
-                      <a>
-                        <span class="image">
-                          <img src="{% static 'img/user.png' %}" alt="img" />
-                        </span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Recent Activities <small>at the UT</small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>                    
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
           <div class="clearfix"></div>
         </div>
+        <div class="x_content">
+          <div class="dashboard-widget-content">
+            <ul class="list-unstyled timeline widget">
+              <li>
+                <div class="block">
+                  <div class="block_content">
+                    <h2 class="title">
+                     <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                   </h2>
+                   <div class="byline">
+                    <span>13 hours ago</span> by <a>Jane Smith</a>
+                    </div>
+                      <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                      </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>The followings five orders in process.</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content bs-example-popovers">     
+          {% for allrequest in allrequests %}
+          <div {% if allrequest.status == '2' %}class="alert alert-info alert-dismissible fade in" {% else %} class="alert alert-warning alert-dismissible fade in" {%endif%} role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span>
+            </button>
+            <strong>{{ allrequest }}</strong> 
+          </div>
+          {% empty %}
+          <li><a >No request pending</a></li>
+          {% endfor %}
+        </div>
+      </div>
     </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Users comments <small><a href="">Do us a comment about the Web Page!</a></small></h2>
+          <ul class="nav navbar-right panel_toolbox">                    
+           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+           </li>
+           <li><a class="close-link"><i class="fa fa-close"></i></a>
+           </li>                   
+         </ul>
+         <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <ul class="list-unstyled msg_list">
+            <li>
+              <a>
+                <span class="image">
+                  <img src="{% static 'img/user.png' %}" alt="img" />
+                </span>
+                <span>
+                  <span>John Smith</span>
+                  <span class="time">3 mins ago</span>
+                </span>
+                <span class="message">
+                  Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Your orders.</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content bs-example-popovers">     
+          {% for myrequest in myrequests %}
+          <div {% if myrequest.status == '2' %} class="alert alert-info alert-dismissible fade in" {% elif myrequest.status == '4' %} class="alert alert-success alert-dismissible fade in" {% elif myrequest.status == '1' %}  class="alert alert-warning alert-dismissible fade in" {% else %} class="alert alert-danger alert-dismissible fade in" {% endif %} role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span>
+            </button>
+            <strong>{{ myrequest }}</strong> 
+          </div>
+          {% empty %}
+          <li><a >No request pending</a></li>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
 {% endblock %}
+
+
+
+<div class="x_content bs-example-popovers">                   

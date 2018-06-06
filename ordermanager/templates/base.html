@@ -23,6 +23,11 @@
     <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
     <!-- JQVMap -->
     <link href="{% static 'vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'vendors/google-code-prettify/bin/prettify.min.css' %}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="{% static 'vendors/switchery/dist/switchery.min.css' %}" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 
@@ -48,7 +53,7 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:principal' %}">Dashboard</a></li>
+                      <li><a href="{% url 'ordermanager:principal' %}">News</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Generate a new Order <span class="fa fa-chevron-down"></span></a>

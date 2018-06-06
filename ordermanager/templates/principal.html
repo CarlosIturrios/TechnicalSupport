@@ -20,20 +20,29 @@
         <div class="x_content">
           <div class="dashboard-widget-content">
             <ul class="list-unstyled timeline widget">
+              {% for activitie in activities %}
               <li>
                 <div class="block">
                   <div class="block_content">
                     <h2 class="title">
-                     <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                     <a>{{ activitie.tittle }}</a>
                    </h2>
-                   <div class="byline">
-                    <span>13 hours ago</span> by <a>Jane Smith</a>
+                   <div class="byline">                   
                     </div>
-                      <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                      <p class="excerpt">{{ activitie.description }}
                       </p>
                   </div>
                 </div>
               </li>
+              {% empty %}
+              <li>
+              <a>
+                <span class="message">
+                  No Activites to show!
+                </span>
+              </a>
+            </li>
+              {% endfor %}
             </ul>
           </div>
         </div>
@@ -78,20 +87,29 @@
         </div>
         <div class="x_content">
           <ul class="list-unstyled msg_list">
+            {% for comment in comments %}
             <li>
               <a>
                 <span class="image">
                   <img src="{% static 'img/user.png' %}" alt="img" />
                 </span>
                 <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
+                  <span>{{ comment.user.get_full_name }}</span>
                 </span>
                 <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that
+                  {{ comment.comment }}
                 </span>
               </a>
             </li>
+            {% empty %}
+            <li>
+              <a>
+                <span class="message">
+                  No comments to show be the first!
+                </span>
+              </a>
+            </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -124,7 +142,3 @@
   </div>
 </div>
 {% endblock %}
-
-
-
-<div class="x_content bs-example-popovers">                   

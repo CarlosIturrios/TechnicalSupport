@@ -35,7 +35,7 @@ class Request(models.Model):
 		User, null=False, blank=False, related_name='request_user_set', on_delete=models.PROTECT
 	)
 	technical = models.ForeignKey(
-		User, null=False, blank=False, related_name='request_technical_set', on_delete=models.PROTECT
+		User, null=True, blank=True, related_name='request_technical_set', on_delete=models.PROTECT
 	)
 	request_type = models.CharField(
 		max_length = 1, blank=False, default='1', choices =(
@@ -58,7 +58,8 @@ class Request(models.Model):
 			('4','Done'),
 		)
 	)
-	comments = models.CharField(max_length=200, null=True, blank=True)		
+	comments = models.CharField(max_length=200, null=True, blank=False)
+	observations = models.CharField(max_length=200, null=True, blank=False)		
 	date_request = models.DateTimeField(null=False, blank=False, auto_now_add=True)
 	date_onprocess = models.DateTimeField(null=True, blank=True)
 	date_done = models.DateTimeField(null=True, blank=True)
@@ -139,3 +140,21 @@ class Poll(models.Model):
 
 	def __str__(self):
 		return 'Poll of the {0} '.format(self.request_id)
+
+
+
+class Activity(models.Model):
+	tittle = models.CharField(max_length=200, null=False, blank=False)
+ 	description = models.CharField(max_length=200, null=False, blank=False)
+	def __str__(self):
+		return 'Tittle: {0} '.format(self.tittle)
+
+
+class Comment(models.Model):
+	comment = models.CharField(max_length=200, null=False, blank=False)
+ 	user = models.ForeignKey(
+		User, null=False, blank=False, related_name='comment_user_set', on_delete=models.PROTECT
+	)
+
+	def __str__(self):
+		return 'Comment by: {0} '.format(self.user)

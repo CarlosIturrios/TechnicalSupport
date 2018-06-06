@@ -58,12 +58,12 @@
                   </li>
                   <li><a><i class="fa fa-edit"></i> Generate a new Order <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:createOrder' %}">Maintenance of computer equipment</a></li>
-                      <li><a href="form_advanced.html">Software configuration</a></li>
-                      <li><a href="form_validation.html">Software installation</a></li>
-                      <li><a href="form_wizards.html">Computer consulting</a></li>
-                      <li><a href="form_upload.html">Audio</a></li>
-                      <li><a href="form_buttons.html">Events in general</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer equipment</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
+                      <li><a href="{% url 'ordermanager:createOrder' 6 %}">Events in general</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i>Order status <span class="fa fa-chevron-down"></span></a>
@@ -110,7 +110,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="" alt="">{{ user.get_full_name }}
+                    <img src="{% static 'img/user.png' %}" alt="">{{ user.get_full_name }}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">

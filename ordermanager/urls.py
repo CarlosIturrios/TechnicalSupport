@@ -12,7 +12,7 @@ urlpatterns = [
 
     # App views    
    	url(r'^$', views.principal, name='principal'),
-   	url(r'^createOrder/$', views.createOrder, name='createOrder'),
+   	url(r'^createOrder/(?P<int>[0-9]+)/$', views.createOrder, name='createOrder'),
    	url(r'^dashboard/$', views.dashboard, name='dashboard'),
    	url(r'^orderPending/$', views.orderPending, name='orderPending'),
    	url(r'^orderSupport/$', views.orderSupport, name='orderSupport'),

@@ -7,3 +7,6 @@ from . import models
 admin.site.register(models.Request)
 admin.site.register(models.Equipment)
 admin.site.register(models.Poll)
+admin.site.register(models.Activity)
+admin.site.register(models.Comment)
+

@@ -22,6 +22,7 @@ def principal(request):
 	return render(request, 'principal.html', {'requests':requests})
 
 
+@login_required()
 def createOrder(request):
 	return render(request, 'createOrder.html')
 

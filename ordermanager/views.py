@@ -16,6 +16,7 @@ from datetime import datetime
 from .models import Request
 
 # Create your views here.
+@login_required()
 def principal(request):
 	requests = Request.objects.filter(user=request.user)
 	return render(request, 'principal.html', {'requests':requests})

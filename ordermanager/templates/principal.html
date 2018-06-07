@@ -90,7 +90,6 @@
         <div class="x_content">
           <ul class="list-unstyled msg_list">
             {% for comment in comments %}
-              {% if comment.date_request|timesince >= "1 week" %}
               <li>
                 <a>
                   <span class="image">
@@ -104,7 +103,6 @@
                   </span>
                 </a>
               </li>
-              {% endif %}
             {% empty %}
             <li>
               <a>

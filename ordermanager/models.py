@@ -43,8 +43,8 @@ class Request(models.Model):
 			('2','Software configuration'),
 			('3','Software installation'),
 			('4','Computer consulting'),
-			('3','Audio'),
-			('4','Events in general'),
+			('5','Audio'),
+			('6','Events in general'),
 		)
 	)
 	equipment_id = models.ForeignKey(
@@ -164,7 +164,7 @@ class Comment(models.Model):
 
 class Department(models.Model):
 	user = models.ForeignKey(
-			User, null=False, blank=False, related_name='departament_user_set', on_delete=models.PROTECT
+			User, null=False, blank=False, related_name='department_user_set', on_delete=models.PROTECT
 		)
 	department = models.CharField(
 		max_length = 1, blank=False, default='1', choices =(

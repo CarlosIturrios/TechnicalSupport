@@ -31,22 +31,22 @@
 								<th>Building</th>								
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
+						<tbody>							
 								{% for request in requests %}
+							<tr>
 								<td><a class="btn btn-primary" href="{% url 'ordermanager:orderSupport' %}">{{ request.id }}</a></td>
 								<td>{{ request.user.get_full_name }}</td>
-								<td>{{ request.request_type }}</td>
-								<td>{{ request.equipment }}</td>
-								<td>{{ request.date_request|naturaltime }}</td>
-								<td>{{ request.user.departament_user_set.get_department_display }}</td>
-								<td>{{ user.departament_user_set.get_building_display }}</td>
-								{% empty %}
-								<td>
-									<h2>No requests pending. </h2>
+								<td>{{ request.get_request_type_display }}</td>
+								<td>									
+									{{ request.equipment_id }}								
 								</td>
-								{% endfor %}
-							</tr>	 						
+								<td>{{ request.date_request|naturaltime }}</td>
+								<td>{{ request.user.department_user_set.department}}</td>
+								<td>{{ request.user.department_user_set.get_building_display }}</td>
+							</tr>
+								{% empty %}
+									<h2>No requests pending. </h2>
+								{% endfor %}								 					
 						</tbody>
 					</table>									
 				</div>

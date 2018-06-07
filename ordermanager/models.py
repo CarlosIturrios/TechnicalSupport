@@ -145,7 +145,9 @@ class Poll(models.Model):
 
 class Activity(models.Model):
 	tittle = models.CharField(max_length=200, null=False, blank=False)
- 	description = models.CharField(max_length=200, null=False, blank=False)
+ 	description = models.TextField( null=False, blank=False)
+ 	date_request = models.DateTimeField(null=False, blank=False, auto_now_add=True)
+	date_event = models.DateTimeField(null=True, blank=True)
 	def __str__(self):
 		return 'Tittle: {0} '.format(self.tittle)
 
@@ -155,6 +157,30 @@ class Comment(models.Model):
  	user = models.ForeignKey(
 		User, null=False, blank=False, related_name='comment_user_set', on_delete=models.PROTECT
 	)
+ 	date_request = models.DateTimeField(null=True, blank=False, auto_now_add=True)
 
 	def __str__(self):
-		return 'Comment by: {0} '.format(self.user)
+		return 'Comment by: {0} '.format(self.user.get_full_name)
+
+class Department(models.Model):
+	user = models.ForeignKey(
+			User, null=False, blank=False, related_name='departament_user_set', on_delete=models.PROTECT
+		)
+	department = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Principal'),
+			('2','Administration and finance'),
+			('3','Linking'),
+			('4','Planning and evaluation'),
+			('5','Academician'),
+		)
+	)
+	building = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Teaching 1'),
+			('2','Teaching 2'),
+			('3','Heavy Laboratory'),
+			('4','Library'),
+			('5','Other'),
+		)
+	)

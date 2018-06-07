@@ -17,4 +17,5 @@ urlpatterns = [
    	url(r'^orderPending/$', views.orderPending, name='orderPending'),
    	url(r'^orderSupport/$', views.orderSupport, name='orderSupport'),
    	url(r'^poll/$', views.poll, name='poll'),
+    url(r'^comment/$', views.comment, name='comment'),
 ]

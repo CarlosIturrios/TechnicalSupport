@@ -47,17 +47,37 @@ def createOrder(request, int):
 	return render(request, 'createOrder.html', {'maintype':maintype, 'equipments':equipments})
 
 
+@login_required()
+@permission_required('ordermanager.add_poll')
 def dashboard(request):
 	return render(request, 'dashboard.html')
 
 
+@login_required()
+@permission_required('ordermanager.add_request')
 def orderPending(request):
-	return render(request, 'orderPending.html')
+	requests = Request.objects.all()
+	return render(request, 'orderPending.html', {'requests':requests})
 
 
+@login_required()
+@permission_required('ordermanager.add_request')
 def orderSupport(request):
 	return render(request, 'orderSupport.html')
 
 
+@login_required()
 def poll(request):
 	return render(request, 'poll.html')
+
+
+@login_required()
+def comment(request):
+	if request.method == "POST":		
+		comments = request.POST.get('comments', None)		
+		comen = Comment()
+		comen.user = request.user
+		comen.comment = comments
+		comen.save()
+		return redirect('ordermanager:principal')
+	return render(request, 'comment.html')

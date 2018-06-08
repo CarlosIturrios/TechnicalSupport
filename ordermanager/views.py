@@ -9,7 +9,7 @@ from django.template.loader import render_to_string, get_template #email sender
 from django.core.mail import EmailMessage, EmailMultiAlternatives #email sender
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.db.models import Q
 
@@ -56,14 +56,17 @@ def dashboard(request):
 @login_required()
 @permission_required('ordermanager.add_request')
 def orderPending(request):
-	requests = Request.objects.all()
-	return render(request, 'orderPending.html', {'requests':requests})
+	principal_requests = Request.objects.filter(user__profile__department='1')
+	admin_requests = Request.objects.filter(~Q(user__profile__department='1')).order_by('user__groups')
+	return render(request, 'orderPending.html', {'principal_requests':principal_requests, 'admin_requests':admin_requests})
 
 
 @login_required()
 @permission_required('ordermanager.add_request')
-def orderSupport(request):
-	return render(request, 'orderSupport.html')
+def orderSupport(request, pk):
+	principal_request = get_object_or_404(Request, pk=pk)
+	
+	return render(request, 'orderSupport.html', {'principal_request':principal_request})
 
 
 @login_required()

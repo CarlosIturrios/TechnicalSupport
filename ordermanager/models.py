@@ -167,8 +167,9 @@ class Comment(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-	department = models.CharField(
-		max_length = 1, blank=False, default='1', choices =(
+    
+    department = models.CharField(
+		max_length = 1, blank=False, default='5', choices =(
 			('1','Principal'),
 			('2','Administration and finance'),
 			('3','Linking'),
@@ -176,7 +177,7 @@ class Profile(models.Model):
 			('5','Academician'),
 		)
 	)
-	building = models.CharField(
+    building = models.CharField(
 		max_length = 1, blank=False, default='1', choices =(
 			('1','Teaching 1'),
 			('2','Teaching 2'),
@@ -184,7 +185,7 @@ class Profile(models.Model):
 			('4','Library'),
 			('5','Other'),
 		)
-	)    
+	)
 
     def __str__(self):  # __unicode__ for Python 2
         return self.user.username

@@ -1,1 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
 {% load humanize %}
+
+{% block 'main' %}
+<div class="right_col" role="main">
+  <div class="row">
+    <div class="col-md-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Order Support! <small>Show the data and do the work!</small><strong> DON'T FORGET PUT YOUR OBSERVATIONS!!</strong></h2>
+          <ul class="nav navbar-right panel_toolbox">
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <br />
+          <form action="{% url 'ordermanager:orderSupport' principal_request.pk %}" method="post" class="form-horizontal form-label-left">  
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">ID:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			<input type="text" class="form-control" readonly="readonly" placeholder="{{ principal_request.id }}">          			
+          		</div>
+          	</div>
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">User:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			<input type="text" class="form-control" readonly="readonly" placeholder="{{ principal_request.user.get_full_name }}">          			
+          		</div>
+          	</div>
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">Request type:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			<input type="text" class="form-control" readonly="readonly" placeholder="{{ principal_request.get_request_type_display }}">          			
+          		</div>
+          	</div>
+          	{% if principal_request.request_type == '1' or principal_request.request_type == '6' %}
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">Equipment:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			<input type="text" class="form-control" readonly="readonly" placeholder="{{ principal_request.equipment }}">      			
+          		</div>
+          	</div>
+          	{% endif %}
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">Problem:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			   <textarea type="text" class="form-control" rows="4" readonly="readonly" placeholder="{{ principal_request.comments }}"></textarea>          			
+          		</div>
+          	</div>
+          	<div class="form-group">
+          		<label class="control-label col-md-4 col-sm-4 col-xs-12">Date:</label>
+          		<div class="col-md-4 col-sm-4 col-xs-12">
+          			<input type="text" class="form-control" readonly="readonly" placeholder="{{ principal_request.date_request|naturaltime }}">           			    
+          		</div>
+          	</div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Observations:<span class="required"></span>
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <textarea name="observations" class="form-control" rows="4" placeholder='What was the solution!'></textarea>
+              </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4">
+                <a type="button" class="btn btn-danger" href="{% url 'ordermanager:principal' %}">Cancel</a>
+                <button type="reset" class="btn btn-primary">Reset</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}                

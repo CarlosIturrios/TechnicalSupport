@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 from os import path
 
+from django.db.models.signals import post_save
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 
 def unique_file_path(instance, filename):	
     base, ext = path.splitext(filename)
@@ -162,10 +164,9 @@ class Comment(models.Model):
 	def __str__(self):
 		return 'Comment by: {0} '.format(self.user.get_full_name)
 
-class Department(models.Model):
-	user = models.OneToOneField(
-			User, null=False, blank=False, on_delete=models.PROTECT
-		)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 	department = models.CharField(
 		max_length = 1, blank=False, default='1', choices =(
 			('1','Principal'),
@@ -183,4 +184,13 @@ class Department(models.Model):
 			('4','Library'),
 			('5','Other'),
 		)
-	)
+	)    
+
+    def __str__(self):  # __unicode__ for Python 2
+        return self.user.username
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

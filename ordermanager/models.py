@@ -163,8 +163,8 @@ class Comment(models.Model):
 		return 'Comment by: {0} '.format(self.user.get_full_name)
 
 class Department(models.Model):
-	user = models.ForeignKey(
-			User, null=False, blank=False, related_name='department_user_set', on_delete=models.PROTECT
+	user = models.OneToOneField(
+			User, null=False, blank=False, on_delete=models.PROTECT
 		)
 	department = models.CharField(
 		max_length = 1, blank=False, default='1', choices =(

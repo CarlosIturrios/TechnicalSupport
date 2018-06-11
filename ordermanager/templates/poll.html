@@ -1,1 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
 {% load humanize %}
+
+{% block 'main' %}
+<div class="right_col" role="main">
+  <div class="row">
+  	<div class="col-md-12 col-xs-12">
+  		<div class="x_panel">
+  			<div class="x_title">
+  				<h2>You are doing the poll from the {{ poll.request_id }}</h2>
+  				<ul class="nav navbar-right panel_toolbox">
+  					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+  					</li>
+  					<li><a class="close-link"><i class="fa fa-close"></i></a>
+  					</li>
+  				</ul>
+  				<div class="clearfix"></div>
+  			</div>
+  			<div class="x_content">
+  				<br />
+  				<form class="form-horizontal" method="post">
+            		{% csrf_token %}
+  					<div class="form-group">
+  						<div>
+  							<div class="col-md-12">
+  								<h3> {{ poll.get_question_display }} </h3>
+  							</div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="1" checked name="answer"> Very satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="2" name="answer"> Satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="3"  name="answer"> Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="4"  name="answer"> Very Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="ln_solid"></div>
+  					<div class="form-group">
+  						<div>
+  							<div class="col-md-12">
+  								<h3> {{ poll.get_questionTwo_display }} </h3>
+  							</div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" checked value="1"  name="answerTwo"> Very satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="2" name="answerTwo"> Satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="3" name="answerTwo"> Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="4" name="answerTwo"> Very Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="ln_solid"></div>  					
+  					<div class="form-group">
+  						<div>
+  							<div class="col-md-12">
+  								<h3> {{ poll.get_questionThree_display }} </h3>
+  							</div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" checked value="1" name="answerThree"> Very satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="2" name="answerThree"> Satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat"  value="3" name="answerThree"> Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="4" name="answerThree"> Very Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="ln_solid"></div>
+  					<div class="form-group">
+  						<div>
+  							<div class="col-md-12">
+  								<h3> {{ poll.get_questionFour_display }} </h3>
+  							</div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" checked value="1" name="answerFour"> Very satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="2" name="answerFour"> Satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="3" name="answerFour"> Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="4" name="answerFour"> Very Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="ln_solid"></div>
+  					<div class="form-group">
+  						<div>
+  							<div class="col-md-12">
+  								<h3> {{ poll.get_questionFive_display }} </h3>
+  							</div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" checked value="1" name="answerFive"> Very satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="2" name="answerFive"> Satisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="3" name="answerFive"> Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  						<div>
+  							<div class="col-md-3 col-sm-3 col-xs-3" class="radio">
+  								<label>
+  									<input type="radio" class="flat" value="4" name="answerFive"> Very Unsatisfied
+  								</label>
+  							</div>
+  						</div>
+  					</div>
+  					<div class="ln_solid"></div>  					
+  					<div class="form-group">
+  						<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+  							<a type="button" href="{% url 'ordermanager:principal' %}" class="btn btn-primary">Cancel</a>
+  							<button type="submit" class="btn btn-success">Submit</button>
+  						</div>
+  					</div>
+
+  				</form>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+</div>
+{% endblock %}                

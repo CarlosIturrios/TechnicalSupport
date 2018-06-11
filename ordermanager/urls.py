@@ -16,6 +16,8 @@ urlpatterns = [
    	url(r'^dashboard/$', views.dashboard, name='dashboard'),
    	url(r'^orderPending/$', views.orderPending, name='orderPending'),
    	url(r'^orderSupport/(?P<pk>[0-9]+)/$', views.orderSupport, name='orderSupport'),
-   	url(r'^poll/$', views.poll, name='poll'),
-    url(r'^comment/$', views.comment, name='comment'),
+   	url(r'^poll/(?P<pk>[0-9]+)/$', views.poll, name='poll'),
+    url(r'^comment/$', views.comment, name='comment'), 
+    url(r'^orderCancel/(?P<pk>[0-9]+)/$', views.orderCancel, name='orderCancel'),
+    url(r'^reports/$', views.reports, name='reports'),
 ]

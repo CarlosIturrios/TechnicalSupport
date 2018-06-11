@@ -37,7 +37,8 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
-
+    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}"/>
+    <link href="{% static 'vendors/starrr/dist/starrr.css' %}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
   </head>
@@ -90,8 +91,8 @@
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">Request</a><p>Dashboard</p></li>
-                      <li><a href="chartjs2.html">Poll</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Dashboard</p></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
@@ -103,8 +104,8 @@
                   {% elif user.groups.last.name == 'Director'  %}
                   <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">Request</a><p>Dashboard</p></li>
-                      <li><a href="chartjs2.html">Poll</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Dashboard</p></li>
                     </ul>
                   </li>
                   {% endif %}
@@ -223,8 +224,33 @@
     <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js' %}"></script>
+    <script src="{% static 'vendors/jquery.hotkeys/jquery.hotkeys.js' %}"></script>
+    <script src="{% static 'vendors/google-code-prettify/src/prettify.js' %}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{% static 'vendors/jquery.tagsinput/src/jquery.tagsinput.js' %}"></script>
+    <!-- Switchery -->
+    <script src="{% static 'vendors/switchery/dist/switchery.min.js' %}"></script>
+    <!-- Select2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <!-- Parsley -->
+    <script src="{% static 'vendors/parsleyjs/dist/parsley.min.js' %}"></script>
+    <!-- Autosize -->
+    <script src="{% static 'vendors/autosize/dist/autosize.min.js' %}"></script>
+    <!-- jQuery autocomplete -->
+    <script src="{% static 'vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js' %}"></script>
+    <!-- starrr -->
+    <script src="{% static 'vendors/starrr/dist/starrr.js' %}"></script>
+    <script src="{% static 'js/toastr.min.js' %}"></script>
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
-  
+    <script>
+        toastr.options.closeButton = true;
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 5000;
+        {% for message in messages %} 
+          toastr.{{ message.tags }}("{{ message }}");
+        {% endfor %}
+      </script>
   </body>
 </html>

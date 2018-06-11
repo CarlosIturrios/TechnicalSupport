@@ -22,7 +22,7 @@
               <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
               <div class="col-md-9 col-sm-9 col-xs-12">
                 <select name="slequipment" class="form-control">
-                  <option disabled selected>Choose Equipment</option>
+                  <option value="3" selected>Choose Equipment</option>
                   {% for equipment in equipments%}
                   <option value="{{equipment.id}}">{{ equipment.name }}</option>                  
                   {% endfor %}

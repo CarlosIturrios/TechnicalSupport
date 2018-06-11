@@ -125,7 +125,7 @@ class Poll(models.Model):
 	)
 	questionFive= models.CharField(
 		max_length = 1, blank=False, default='1', choices =(
-			('1','What is yout level of satisfaction?'),
+			('1','What is your level of satisfaction?'),
 		)
 	)
  	answerFive = models.CharField(
@@ -140,8 +140,15 @@ class Poll(models.Model):
 		Request, null=False, blank=True, related_name='request_set', on_delete=models.PROTECT
 	)
 
+	status = models.CharField(
+		max_length = 1, blank=False, default='1', choices =(
+			('1','Pennding'),
+			('2','Done'),
+		)
+	)
+
 	def __str__(self):
-		return 'Poll of the {0} '.format(self.request_id)
+		return 'Poll of the {0} status: {1} '.format(self.request_id, self.status)
 
 
 

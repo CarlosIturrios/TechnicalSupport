@@ -6,7 +6,89 @@
 {% block 'main' %}
 <div class="right_col" role="main">
 	<div class="row">
-		
+		<div class="row top_tiles">
+			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-warning"></i></div>
+					<div class="count">{{ cancelRequest }}</div>
+					<h3>Cancel requests</h3>
+					<p>Every cancel request.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-check-circle-o"></i></div>
+					<div class="count">{{ doneRequest }}</div>
+					<h3>Done requests</h3>
+					<p>Every done requests.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-eye-slash"></i></div>
+					<div class="count">{{ PenndingRequest }}</div>
+					<h3>Outstanding requests</h3>
+					<p>Every pennding requests.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-spinner"></i></div>
+					<div class="count">{{ onProcessRequest }}</div>
+					<h3>On process requests.</h3>
+					<p>Every on process requests.</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Grafica</h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+				</div>
+			</div>
+		</div>		
 	</div>
 </div>
 {% endblock %}     
+{% block 'script' %}
+<script>
+	window.onload = function() {
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+		text: "Requests by period"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+		{ y: 27.34, label: "Done Requests" },
+		{ y: 10.62, label: "Cancel Requests" },
+		{ y: 5.02, label: "Pennding Requests" },
+		{ y: 1.22, label: "On process Requests" },
+		]
+	}]
+});
+		chart.render();
+
+	}
+</script>
+{% endblock %} 

@@ -25,8 +25,28 @@ def principal(request):
 	myrequests = Request.objects.filter(user=request.user).order_by('status')
 	comments = Comment.objects.all().order_by('id').reverse()
 	activities = Activity.objects.all().order_by('id').reverse()
-	polls = Poll.objects.filter(request_id__user = request.user, status='1')
-	return render(request, 'principal.html', {'requests':requests, 'allrequests':allrequests, 'myrequests':myrequests, 'comments':comments, 'activities':activities, 'polls':polls})
+	polls = Poll.objects.filter(request_id__user = request.user, status='1', request_id__status='4')
+	numrequest = Request.objects.filter(~Q(status='3'), ~Q(status='4')).order_by('status').reverse().count()
+	userrequest = Request.objects.filter(user=request.user, status='1').first()
+	if userrequest:
+		print(userrequest)		
+		userrequest = int(userrequest.pk)
+		requestlast = Request.objects.filter(~Q(status='3'), ~Q(status='4')).reverse().first()
+		print(requestlast)
+		requestlast = int(requestlast.pk)
+		if userrequest - requestlast == 0:
+				numrequest = int(numrequest) -1
+		else:
+			numrequest = (int(numrequest) - (requestlast-userrequest))-1
+	return render(request, 'principal.html', {
+		'requests':requests, 
+		'allrequests':allrequests, 
+		'myrequests':myrequests, 
+		'comments':comments, 
+		'activities':activities, 
+		'polls':polls,
+		'userrequest':userrequest,
+		'numrequest':numrequest})
  
 
 @login_required()
@@ -35,11 +55,17 @@ def createOrder(request, int):
 	maintype = int
 	equipments = Equipment.objects.filter(responsible=request.user)
 	reques = Request.objects.filter(user=request.user)
-	for reque in reques:
-		thepoll = Poll.objects.get(request_id = reque.id)
-		if thepoll.status == '1':
-			messages.error(request, 'You have to do the poll before to create a new request!')
-			return redirect('ordermanager:poll', thepoll.pk)
+	for reque in reques:		
+		if reque.status =='1' or reque.status == '2':
+			thepoll = Poll.objects.get(request_id = reque.id)		
+			if thepoll.status == '1':
+				messages.error(request, 'You have to wait the technical does the request and do the poll before to create a new request!')
+				return redirect('ordermanager:principal')
+		elif reque.status == '4':
+			thepoll = Poll.objects.get(request_id = reque.id)		
+			if thepoll.status == '1':
+				messages.error(request, 'You have to do the poll before to create a new request!')
+				return redirect('ordermanager:poll', thepoll.pk)
 	
 	if request.method == "POST":		
 		comments = request.POST.get('comments', None)		
@@ -70,7 +96,16 @@ def createOrder(request, int):
 @permission_required('ordermanager.add_poll')
 def dashboard(request):
 	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
-	return render(request, 'dashboard.html', {'requests':requests})
+	cancelRequest = Request.objects.filter(status='3').count()
+	PenndingRequest = Request.objects.filter(status='1').count()
+	onProcessRequest = Request.objects.filter(status='2').count()
+	doneRequest = Request.objects.filter(status='4').count()
+	return render(request, 'dashboard.html', {
+		'requests':requests,
+		'cancelRequest':cancelRequest,
+		'PenndingRequest':PenndingRequest,
+		'onProcessRequest':onProcessRequest,
+		'doneRequest':doneRequest})
 
 
 @login_required()
@@ -150,4 +185,8 @@ def orderCancel(request, pk):
 @permission_required('ordermanager.add_request')
 def reports(request):
 	principal_requests = Request.objects.all()
+	if request.method=="POST":
+		date1 = request.POST.get('date1', None)
+		date2 = request.POST.get('date2', None)		
+		principal_requests = Request.objects.filter(date_request__range=[date1, date2])
 	return render(request, 'reports.html', {'principal_requests':principal_requests})

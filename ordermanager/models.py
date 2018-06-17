@@ -57,7 +57,7 @@ class Request(models.Model):
 			('1','Pennding'),
 			('2','on process'),
 			('3','Canceled'),
-			('4','Done'),
+			('4','Done'),			
 		)
 	)
 	comments = models.CharField(max_length=200, null=True, blank=False)

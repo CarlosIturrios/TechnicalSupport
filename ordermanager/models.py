@@ -148,7 +148,7 @@ class Poll(models.Model):
 	)
 
 	def __str__(self):
-		return 'Poll of the {0} status: {1} '.format(self.request_id, self.status)
+		return 'Poll of the {0} '.format(self.request_id)
 
 
 

@@ -92,13 +92,8 @@
                   <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Dashboard</p></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                      <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                      <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Table</p></li>
                     </ul>
                   </li>
                   {% elif user.groups.last.name == 'Director'  %}

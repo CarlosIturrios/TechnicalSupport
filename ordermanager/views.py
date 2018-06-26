@@ -23,7 +23,7 @@ def principal(request):
 	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
 	allrequests = Request.objects.filter(~Q(status='3'), ~Q(status='4')).order_by('status').reverse()[:5]
 	myrequests = Request.objects.filter(user=request.user).order_by('status')
-	comments = Comment.objects.all().order_by('id').reverse()
+	comments = Comment.objects.all().order_by('id').reverse()[:5]
 	activities = Activity.objects.all().order_by('id').reverse()
 	polls = Poll.objects.filter(request_id__user = request.user, status='1', request_id__status='4')
 	numrequest = Request.objects.filter(~Q(status='3'), ~Q(status='4')).order_by('status').reverse().count()
@@ -97,15 +97,132 @@ def createOrder(request, int):
 def dashboard(request):
 	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
 	cancelRequest = Request.objects.filter(status='3').count()
-	PenndingRequest = Request.objects.filter(status='1').count()
+	penndingRequest = Request.objects.filter(status='1').count()
 	onProcessRequest = Request.objects.filter(status='2').count()
 	doneRequest = Request.objects.filter(status='4').count()
+	allrequsts = float(Request.objects.all().count())
+	cancel = Request.objects.filter(status='3').count()
+	pennding = Request.objects.filter(status='1').count()
+	onProcess = Request.objects.filter(status='2').count()
+	done = Request.objects.filter(status='4').count()
+	done = float((done*100)/allrequsts)
+	done = float(("%0.2f"%done))
+	onProcess = float((onProcess*100)/allrequsts)
+	onProcess = float(("%0.2f"%onProcess))
+	pennding = float((pennding*100)/allrequsts)
+	pennding = float(("%0.2f"%pennding))
+	cancel = float((cancel*100)/allrequsts)
+	cancel = float(("%0.2f"%cancel))
+	if request.method == "POST":
+		date = request.POST.get('date', None)
+		dateTwo = request.POST.get('dateTwo', None)
+		cancelRequest = Request.objects.filter(date_request__range=[date, dateTwo],status='3').count()
+		penndingRequest = Request.objects.filter(date_request__range=[date, dateTwo],status='1').count()
+		onProcessRequest = Request.objects.filter(date_request__range=[date, dateTwo],status='2').count()
+		doneRequest = Request.objects.filter(date_request__range=[date, dateTwo],status='4').count()
+		allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+		if allrequsts != 0:
+			cancel = Request.objects.filter(date_request__range=[date, dateTwo],status='3').count()
+			pennding = Request.objects.filter(date_request__range=[date, dateTwo],status='1').count()
+			onProcess = Request.objects.filter(date_request__range=[date, dateTwo],status='2').count()
+			done = Request.objects.filter(date_request__range=[date, dateTwo],status='4').count()
+			done = float((done*100)/allrequsts)
+			done = float(("%0.2f"%done))
+			onProcess = float((onProcess*100)/allrequsts)
+			onProcess = float(("%0.2f"%onProcess))
+			pennding = float((pennding*100)/allrequsts)
+			pennding = float(("%0.2f"%pennding))
+			cancel = float((cancel*100)/allrequsts)
+			cancel = float(("%0.2f"%cancel))
+		else: 
+			done = 0
+			onProcess = 0
+			pennding = 0
+			cancel = 0
+			messages.error(request, 'There is not any request!')			
 	return render(request, 'dashboard.html', {
 		'requests':requests,
 		'cancelRequest':cancelRequest,
-		'PenndingRequest':PenndingRequest,
+		'penndingRequest':penndingRequest,
 		'onProcessRequest':onProcessRequest,
-		'doneRequest':doneRequest})
+		'doneRequest':doneRequest,
+		'allrequsts':allrequsts,
+		'cancel':cancel,
+		'pennding':pennding,
+		'onProcess':onProcess,
+		'done':done})
+
+
+@login_required()
+@permission_required('ordermanager.add_poll')
+def department_dashboard(request):
+	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+	principalNumber = Request.objects.filter(user__profile__department='1').count()
+	administrationNumber = Request.objects.filter(user__profile__department='2').count()
+	linkingNumber = Request.objects.filter(user__profile__department='3').count()
+	planningNumber = Request.objects.filter(user__profile__department='4').count()
+	academicanNumber = Request.objects.filter(user__profile__department='5').count()
+	allrequsts = float(Request.objects.all().count())
+	principal = Request.objects.filter(user__profile__department='1').count()
+	principal = float((principal*100)/allrequsts)
+	principal = float(("%0.2f"%principal))
+	administration = Request.objects.filter(user__profile__department='2').count()
+	administration = float((administration*100)/allrequsts)
+	administration = float(("%0.2f"%administration))
+	linking = Request.objects.filter(user__profile__department='3').count()
+	linking = float((linking*100)/allrequsts)
+	linking = float(("%0.2f"%linking))
+	planning = Request.objects.filter(user__profile__department='4').count()
+	planning = float((planning*100)/allrequsts)
+	planning = float(("%0.2f"%planning))
+	academican = Request.objects.filter(user__profile__department='5').count()
+	academican = float((academican*100)/allrequsts)
+	academican = float(("%0.2f"%academican))
+	if request.method == "POST":
+		date = request.POST.get('date', None)
+		dateTwo = request.POST.get('dateTwo', None)
+		principalNumber = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='1').count()
+		administrationNumber = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='2').count()
+		linkingNumber = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='3').count()
+		planningNumber = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='4').count()
+		academicanNumber = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='5').count()
+		allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+		if allrequsts != 0:
+			principal = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='1').count()
+			principal = float((principal*100)/allrequsts)
+			principal = float(("%0.2f"%principal))
+			administration = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='2').count()
+			administration = float((administration*100)/allrequsts)
+			administration = float(("%0.2f"%administration))
+			linking = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='3').count()
+			linking = float((linking*100)/allrequsts)
+			linking = float(("%0.2f"%linking))
+			planning = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='4').count()
+			planning = float((planning*100)/allrequsts)
+			planning = float(("%0.2f"%planning))
+			academican = Request.objects.filter(date_request__range=[date, dateTwo],user__profile__department='5').count()
+			academican = float((academican*100)/allrequsts)
+			academican = float(("%0.2f"%academican))
+		else: 
+			principal = 0
+			administration = 0
+			linking = 0
+			planning = 0
+			academican = 0
+			messages.error(request, 'There is not any request!')			
+	return render(request, 'department_dashboard.html', {
+		'requests':requests,
+		'principalNumber':principalNumber,
+		'administrationNumber':administrationNumber,
+		'linkingNumber':linkingNumber,
+		'planningNumber':planningNumber,
+		'academicanNumber':academicanNumber,
+		'allrequsts':allrequsts,
+		'principal':principal,
+		'administration':administration,
+		'linking':linking,
+		'planning':planning,
+		'academican':academican})
 
 
 @login_required()
@@ -124,6 +241,7 @@ def orderSupport(request, pk):
 	principal_request = get_object_or_404(Request, pk=pk)
 	if request.method == "GET":
 		principal_request.status = '2'
+		principal_request.technical = request.user
 		principal_request.date_onprocess = datetime.now()
 		principal_request.save()
 	elif request.method == "POST":
@@ -176,6 +294,7 @@ def orderCancel(request, pk):
 	principal_request = get_object_or_404(Request, pk=pk)
 	if request.method == "POST":
 		principal_request.status = '3'
+		principal_request.save()
 		messages.error(request, 'The order was Canceled successfully!')
 		return redirect('ordermanager:orderPending')
 	return render(request, 'orderCancel.html', {'principal_request':principal_request})
@@ -185,8 +304,8 @@ def orderCancel(request, pk):
 @permission_required('ordermanager.add_request')
 def reports(request):
 	principal_requests = Request.objects.all()
-	if request.method=="POST":
-		date1 = request.POST.get('date1', None)
-		date2 = request.POST.get('date2', None)		
-		principal_requests = Request.objects.filter(date_request__range=[date1, date2])
+	if request.method == "POST":
+		date = request.POST.get('date', None)
+		dateTwo = request.POST.get('dateTwo', None)
+		principal_requests = Request.objects.filter(date_request__range=[date, dateTwo])
 	return render(request, 'reports.html', {'principal_requests':principal_requests})

@@ -7,36 +7,54 @@
 <div class="right_col" role="main">
 	<div class="row">
 		<div class="row top_tiles">
-			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
 				<div class="tile-stats">
-					<div class="icon"><i class="fa fa-warning"></i></div>
-					<div class="count">{{ cancelRequest }}</div>
-					<h3>Cancel requests</h3>
-					<p>Every cancel request.</p>
+					<div class="icon"><i class="fa fa-user"></i></div>
+					<div class="count">{{ principalNumber }}</div>
+					<h3> Principal Department.</h3>
+					<p>Number of orders by principal department.</p>
 				</div>
 			</div>
-			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
 				<div class="tile-stats">
 					<div class="icon"><i class="fa fa-check-circle-o"></i></div>
-					<div class="count">{{ doneRequest }}</div>
-					<h3>Done requests</h3>
-					<p>Every done requests.</p>
+					<div class="count">{{ administrationNumber }}</div>
+					<h3>Administration Department.</h3>
+					<p>Number of orders by administration department.</p>
 				</div>
 			</div>
-			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
 				<div class="tile-stats">
 					<div class="icon"><i class="fa fa-eye-slash"></i></div>
-					<div class="count">{{ penndingRequest }}</div>
-					<h3>Pennding requests</h3>
-					<p>Every pennding requests.</p>
+					<div class="count">{{ linkingNumber }}</div>
+					<h3>Linking Department.</h3>
+					<p>Number of orders by linking department.</p>
 				</div>
 			</div>
-			<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-eye-slash"></i></div>
+					<div class="count">{{ planningNumber }}</div>
+					<h3>Planning Department.</h3>
+					<p>Number of orders by planning department.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
 				<div class="tile-stats">
 					<div class="icon"><i class="fa fa-spinner"></i></div>
-					<div class="count">{{ onProcessRequest }}</div>
-					<h3>On process requests.</h3>
-					<p>Every on process requests.</p>
+					<div class="count">{{ academicanNumber }}</div>
+					<h3>Academican Department.</h3>
+					<p>Number of orders by academican department.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-refresh"></i></div>
+					<div class="count">
+						<a type="button" href="{% url 'ordermanager:department_dashboard' %}" class="btn btn-info">Refresh</a>
+					</div>
+					<h3>Reset the graphic.</h3>
+					<p>Refresh the page to get the initial data.</p>
 				</div>
 			</div>
 		</div>
@@ -77,7 +95,7 @@
 	exportEnabled: true,
 	animationEnabled: true,
 	title: {
-		text: "Requests status."
+		text: "Total number of orders."
 	},
 	data: [{
 		type: "pie",
@@ -88,10 +106,11 @@
 		indexLabelFontSize: 16,
 		indexLabel: "{label} - {y}%",
 		dataPoints: [
-		{ y: {{ done }}, label: "Done Requests" },
-		{ y: {{ cancel }}, label: "Cancel Requests" },
-		{ y: {{ pennding }}, label: "Pennding Requests" },
-		{ y: {{ onProcess }}, label: "On process Requests" },
+		{ y: {{ principal }}, label: "Principal" },
+		{ y: {{ administration }}, label: "Administration and Finance" },
+		{ y: {{ linking }}, label: "Linking" },
+		{ y: {{ planning }}, label: "Planning and evaluation" },
+		{ y: {{ academican }}, label: "Academican" },
 		]
 	}]
 });

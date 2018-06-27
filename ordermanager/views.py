@@ -155,6 +155,89 @@ def dashboard(request):
 
 @login_required()
 @permission_required('ordermanager.add_poll')
+def request_type_dashboard(request):
+	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+	maintenanceComputer = Request.objects.filter(request_type='1').count()
+	softwareConfiguration = Request.objects.filter(request_type='2').count()
+	softwareInstallation = Request.objects.filter(request_type='3').count()
+	computerConsulting = Request.objects.filter(request_type='4').count()
+	audioCount = Request.objects.filter(request_type='5').count()
+	eventsGeneral = Request.objects.filter(request_type='6').count()
+	allrequsts = float(Request.objects.all().count())
+	maintenance = Request.objects.filter(request_type='1').count()
+	maintenance = float((maintenance*100)/allrequsts)
+	maintenance = float(("%0.2f"%maintenance))
+	configuration = Request.objects.filter(request_type='2').count()
+	configuration = float((configuration*100)/allrequsts)
+	configuration = float(("%0.2f"%configuration))
+	installation = Request.objects.filter(request_type='3').count()
+	installation = float((installation*100)/allrequsts)
+	installation = float(("%0.2f"%installation))
+	consulting = Request.objects.filter(request_type='4').count()
+	consulting = float((consulting*100)/allrequsts)
+	consulting = float(("%0.2f"%consulting))
+	audio = Request.objects.filter(request_type='5').count()
+	audio = float((audio*100)/allrequsts)
+	audio = float(("%0.2f"%audio))
+	events = Request.objects.filter(request_type='6').count()
+	events = float((events*100)/allrequsts)
+	events = float(("%0.2f"%events))
+	if request.method == "POST":
+		date = request.POST.get('date', None)
+		dateTwo = request.POST.get('dateTwo', None)
+		maintenanceComputer = Request.objects.filter(date_request__range=[date, dateTwo],request_type='1').count()
+		softwareConfiguration = Request.objects.filter(date_request__range=[date, dateTwo],request_type='2').count()
+		softwareInstallation = Request.objects.filter(date_request__range=[date, dateTwo],request_type='3').count()
+		computerConsulting = Request.objects.filter(date_request__range=[date, dateTwo],request_type='4').count()
+		audioCount = Request.objects.filter(date_request__range=[date, dateTwo],request_type='5').count()
+		eventsGeneral = Request.objects.filter(date_request__range=[date, dateTwo],request_type='6').count()
+		allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+		if allrequsts != 0:
+			maintenance = Request.objects.filter(date_request__range=[date, dateTwo],request_type='1').count()
+			maintenance = float((maintenance*100)/allrequsts)
+			maintenance = float(("%0.2f"%maintenance))
+			configuration = Request.objects.filter(date_request__range=[date, dateTwo],request_type='2').count()
+			configuration = float((configuration*100)/allrequsts)
+			configuration = float(("%0.2f"%configuration))
+			installation = Request.objects.filter(date_request__range=[date, dateTwo],request_type='3').count()
+			installation = float((installation*100)/allrequsts)
+			installation = float(("%0.2f"%installation))
+			consulting = Request.objects.filter(date_request__range=[date, dateTwo],request_type='4').count()
+			consulting = float((consulting*100)/allrequsts)
+			consulting = float(("%0.2f"%consulting))
+			audio = Request.objects.filter(date_request__range=[date, dateTwo],request_type='5').count()
+			audio = float((audio*100)/allrequsts)
+			audio = float(("%0.2f"%audio))
+			events = Request.objects.filter(date_request__range=[date, dateTwo],request_type='6').count()
+			events = float((events*100)/allrequsts)
+			events = float(("%0.2f"%events))
+		else: 
+			maintenance = 0
+			configuration = 0
+			installation = 0
+			consulting = 0
+			audio = 0
+			events = 0
+			messages.error(request, 'There is not any request!')			
+	return render(request, 'request_type_dashboard.html', {
+		'requests':requests,
+		'maintenanceComputer':maintenanceComputer,
+		'softwareConfiguration':softwareConfiguration,
+		'softwareInstallation':softwareInstallation,
+		'computerConsulting':computerConsulting,
+		'audioCount':audioCount,
+		'eventsGeneral':eventsGeneral,
+		'allrequsts':allrequsts,
+		'maintenance':maintenance,
+		'configuration':configuration,
+		'installation':installation,
+		'consulting':consulting,
+		'audio':audio,
+		'events':events})
+
+
+@login_required()
+@permission_required('ordermanager.add_poll')
 def department_dashboard(request):
 	requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
 	principalNumber = Request.objects.filter(user__profile__department='1').count()

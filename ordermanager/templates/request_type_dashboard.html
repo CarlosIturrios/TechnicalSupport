@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+<!-- Estructura basica para diseño -->
+
+{% block 'main' %}
+<div class="right_col" role="main">
+	<div class="row">
+		<div class="row top_tiles">
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-user"></i></div>
+					<div class="count">{{ maintenanceComputer }}</div>
+					<h3>Maintenance of computer equipment.</h3>
+					<p>Number of request type: Maintenance of computer equipment..</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-check-circle-o"></i></div>
+					<div class="count">{{ softwareConfiguration }}</div>
+					<h3>Software configuration.</h3>
+					<p>Number of request type: Software configuration.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-eye-slash"></i></div>
+					<div class="count">{{ softwareInstallation }}</div>
+					<h3>Software installation.</h3>
+					<p>Number of request type: Software installation.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-eye-slash"></i></div>
+					<div class="count">{{ computerConsulting }}</div>
+					<h3>Computer consulting.</h3>
+					<p>Number of request type: Computer consulting.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-spinner"></i></div>
+					<div class="count">{{ audioCount }}</div>
+					<h3>Audio.</h3>
+					<p>Number of request type: Audio.</p>
+				</div>
+			</div>
+			<div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="tile-stats">
+					<div class="icon"><i class="fa fa-refresh"></i></div>
+					<div class="count">{{ eventsGeneral }}</div>
+					<h3>Events in general.</h3>
+					<p>Number of request type: Events in general.</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Dashboard</h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<form class="form" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<input type="date" name="date" required="True">
+						<input type="date" name="dateTwo" required="True">
+						<button type="submit" class="btn btn-success">Submit</button>
+					</form>
+				</div>
+				<div class="x_content">
+					<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>
+{% endblock %}     
+{% block 'script' %}
+<script>
+	window.onload = function() {
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+		text: "Total number of orders."
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+		{ y: {{ maintenance }}, label: "Maintenance of computer equipment" },
+		{ y: {{ configuration }}, label: "Software configuration" },
+		{ y: {{ installation }}, label: "Software installation" },
+		{ y: {{ consulting }}, label: "Computer consulting" },
+		{ y: {{ audio }}, label: "Audio" },
+		{ y: {{ events }}, label: "Events in general" },
+		]
+	}]
+});
+		chart.render();
+
+	}
+</script>
+{% endblock %} 

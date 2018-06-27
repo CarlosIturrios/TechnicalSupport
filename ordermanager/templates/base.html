@@ -91,7 +91,8 @@
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:dashboard' %}">Total requests</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a><p>Dashboard</p></li>
                       <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a><p>Dashboard</p></li>
                       <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Table</p></li>
                     </ul>
@@ -100,6 +101,8 @@
                   <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a><p>Dashboard</p></li>
+                      <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a><p>Dashboard</p></li>
                       <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Dashboard</p></li>
                     </ul>
                   </li>

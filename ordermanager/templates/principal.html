@@ -55,7 +55,7 @@
                   <div class="block">
                     <div class="block_content">
                       <h2 class="title">
-                       <a>{{ activitie.tittle }}</a> <small> {{activitie.date_request|naturaltime}}</small>
+                       <strong>{{ activitie.tittle }}</strong> <small> {{activitie.date_request|naturaltime}}</small>
                      </h2>
                      <div class="byline">                   
                       </div>
@@ -95,7 +95,7 @@
           {% for allrequest in allrequests %}
           <div {% if allrequest.status == '2' %}class="alert alert-info alert-dismissible fade in" {% else %} class="alert alert-warning alert-dismissible fade in" {%endif%} role="alert">
             {% if user.groups.last.name == 'Manager' or user.groups.last.name == 'Technical' %}
-            <a type="button" class="close" data-dismiss="alert" href="{% url 'ordermanager:orderSupport' allrequest.pk  %}" aria-label="Close"><span aria-hidden="true">x</span>
+            <a type="button" class="close" data-dismiss="alert" href="{% url 'ordermanager:orderSupport' allrequest.pk  %}" aria-label="Close"><span aria-hidden="true"> <i class="fa fa-question-circle"></i> </span>
             </a>
             {% endif %}
             <strong>Status: {{ allrequest.get_status_display }}, Request type: {{ allrequest.get_request_type_display }}</strong> 

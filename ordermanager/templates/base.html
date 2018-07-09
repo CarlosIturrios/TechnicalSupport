@@ -2,7 +2,7 @@
 {% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
 
     <title>Technical Support | UtSlrc</title>
 
+    <link rel="shortcut icon" href="{% static 'img/Icono.png' %}">
     <!-- Bootstrap -->
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -19,7 +20,7 @@
     <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
     <!-- iCheck -->
     <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
-	
+
     <!-- bootstrap-progressbar -->
     <link href="{% static 'vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
     <!-- JQVMap -->
@@ -34,214 +35,242 @@
     <!-- bootstrap-tables -->
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}"
+          rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}"/>
     <link href="{% static 'vendors/starrr/dist/starrr.css' %}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
-  </head>
+</head>
 
-  <body class="nav-md">
-    <div class="container body">
-      <div class="main_container">
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="{% url 'ordermanager:principal' %}" class="site_title"><i class="fa fa-wrench"></i> <span>UTSLRC</span></a></a>
-            </div>
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="{% url 'ordermanager:principal' %}" class="site_title">
+                        <img src="{% static 'img/Icono.png' %}" width="60px" height="60px"> <span>UTSLRC</span></a></a>
+                </div>
 
+                <br/>
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>Technical Support!</h3>
+                        <ul class="nav side-menu">
+                            <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{% url 'ordermanager:principal' %}">News</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-edit"></i> Generate a new Order <span
+                                    class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer
+                                        equipment</a></li>
+                                    <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a></li>
+                                    <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a></li>
+                                    <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a></li>
+                                    <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
+                                    <li><a href="{% url 'ordermanager:createOrder' 6 %}">Events in general</a></li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-desktop"></i>Order status <span
+                                    class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% for request in requests %}
+                                        <li><a>{{ request }}</a></li>
+                                    {% empty %}
+                                        <li><a>No request pending</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% if user.groups.last.name == 'Manager' or user.groups.last.name == 'Technical' %}
+                                <li><a><i class="fa fa-table"></i> Orders pending <span
+                                        class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'ordermanager:orderPending' %}">Order panel</a>
 
-            <br />
-            <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-                <h3>Technical Support!</h3>
-                <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:principal' %}">News</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-edit"></i> Generate a new Order <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer equipment</a></li>
-                      <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a></li>
-                      <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a></li>
-                      <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a></li>
-                      <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
-                      <li><a href="{% url 'ordermanager:createOrder' 6 %}">Events in general</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-desktop"></i>Order status <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      {% for request in requests %}
-                      <li><a>{{request}}</a></li>
-                      {% empty %}
-                      <li><a >No request pending</a></li>
-                      {% endfor %}
-                    </ul>
-                  </li>
-                  {% if user.groups.last.name == 'Manager' or user.groups.last.name == 'Technical'  %}
-                  <li><a><i class="fa fa-table"></i> Orders pending <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:orderPending' %}">Order panel</a><p>Enter to attend orders.</p> </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:dashboard' %}">Total requests</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Table</p></li>
-                    </ul>
-                  </li>
-                  {% elif user.groups.last.name == 'Director'  %}
-                  <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="{% url 'ordermanager:dashboard' %}">Request</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a><p>Dashboard</p></li>
-                      <li><a href="{% url 'ordermanager:reports' %}">Reports</a><p>Dashboard</p></li>
-                    </ul>
-                  </li>
-                  {% endif %}
-                </ul>
-              </div>
+                                            <p>Enter to attend orders.</p></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span
+                                        class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'ordermanager:dashboard' %}">Total requests</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:reports' %}">Reports</a>
+
+                                            <p>Table</p></li>
+                                    </ul>
+                                </li>
+                            {% elif user.groups.last.name == 'Director' %}
+                                <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span
+                                        class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'ordermanager:dashboard' %}">Request</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:request_type_dashboard' %}">Request type</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a>
+
+                                            <p>Dashboard</p></li>
+                                        <li><a href="{% url 'ordermanager:reports' %}">Reports</a>
+
+                                            <p>Dashboard</p></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- /sidebar menu -->
             </div>
-            <!-- /sidebar menu -->
-          </div>
         </div>
 
         <!-- top navigation -->
         <div class="top_nav">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-              </div>
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
 
-              <ul class="nav navbar-nav navbar-right">
-                <li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static 'img/user.png' %}" alt="">{{ user.get_full_name }}
-                    <span class=" fa fa-angle-down"></span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li>
-                      <a href="javascript:;"><i class="fa fa-question-circle pull-right"></i>Help</a>
-                    </li>
-                    <li>
-                      <a href="{% url 'ordermanager:logout' %}">
-                        <i class="fa fa-sign-out pull-right"></i> Log Out
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </nav>
-          </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <img src="{% static 'img/user.png' %}" alt="">{{ user.get_full_name }}
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li>
+                                    <a href="javascript:;"><i class="fa fa-question-circle pull-right"></i>Help</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'ordermanager:logout' %}">
+                                        <i class="fa fa-sign-out pull-right"></i> Log Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
         <!-- /top navigation -->
         <!-- page content -->
         {% block 'main' %}
-        {% endblock %}  
+        {% endblock %}
         <!-- /page contenet -->
-         <!-- footer content -->
+        <!-- footer content -->
         <footer>
-          <div class="pull-right">
-            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Web application was made <i class="fa fa-user" aria-hidden="true"></i> by <a>Carlos Iturrios</a>
-          </div>
-          <div class="clearfix"></div>
+            <div class="pull-right">
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                All rights reserved | This Web application was made <i class="fa fa-user" aria-hidden="true"></i> by <a>Carlos
+                Iturrios</a>
+            </div>
+            <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
-      </div>
     </div>
+</div>
 
-    <!-- jQuery -->
-    <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
-    <!-- Bootstrap -->
-    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <!-- FastClick -->
-    <script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
-    <!-- NProgress -->
-    <script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
-    <!-- Chart.js -->
-    <script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
-    <!-- gauge.js -->
-    <script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
-    <!-- iCheck -->
-    <script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
-    <!-- Skycons -->
-    <script src="{% static 'vendors/skycons/skycons.js' %}"></script>
-    <!-- Flot -->
-    <script src="{% static 'vendors/Flot/jquery.flot.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.pie.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.time.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.stack.js' %}"></script>
-    <script src="{% static 'vendors/Flot/jquery.flot.resize.js' %}"></script>
-    <!-- Flot plugins -->
-    <script src="{% static 'vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
-    <script src="{% static 'vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
-    <script src="{% static 'vendors/flot.curvedlines/curvedLines.js' %}"></script>
-    <!-- DateJS -->
-    <script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
-    <!-- JQVMap -->
-    <script src="{% static 'vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
-    <script src="{% static 'vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
-    <script src="{% static 'vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
-     <!-- Datatables -->
-    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
-    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
-    <script src="{% static 'vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js' %}"></script>
-    <script src="{% static 'vendors/jquery.hotkeys/jquery.hotkeys.js' %}"></script>
-    <script src="{% static 'vendors/google-code-prettify/src/prettify.js' %}"></script>
-    <!-- jQuery Tags Input -->
-    <script src="{% static 'vendors/jquery.tagsinput/src/jquery.tagsinput.js' %}"></script>
-    <!-- Switchery -->
-    <script src="{% static 'vendors/switchery/dist/switchery.min.js' %}"></script>
-    <!-- Select2 -->
-    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
-    <!-- Parsley -->
-    <script src="{% static 'vendors/parsleyjs/dist/parsley.min.js' %}"></script>
-    <!-- Autosize -->
-    <script src="{% static 'vendors/autosize/dist/autosize.min.js' %}"></script>
-    <!-- jQuery autocomplete -->
-    <script src="{% static 'vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js' %}"></script>
-    <!-- starrr -->
-    <script src="{% static 'vendors/starrr/dist/starrr.js' %}"></script>
-    <script src="{% static 'js/toastr.min.js' %}"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="{% static 'build/js/custom.min.js' %}"></script>
-    <script src="{% static 'js/canvasjs.min.js' %}"></script>    
-    <script>
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000;
-        {% for message in messages %} 
-          toastr.{{ message.tags }}("{{ message }}");
-        {% endfor %}
-      </script>
-      {% block 'script' %}
-      {% endblock %}  
-  </body>
+<!-- jQuery -->
+<script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'vendors/fastclick/lib/fastclick.js' %}"></script>
+<!-- NProgress -->
+<script src="{% static 'vendors/nprogress/nprogress.js' %}"></script>
+<!-- Chart.js -->
+<script src="{% static 'vendors/Chart.js/dist/Chart.min.js' %}"></script>
+<!-- gauge.js -->
+<script src="{% static 'vendors/gauge.js/dist/gauge.min.js' %}"></script>
+<!-- bootstrap-progressbar -->
+<script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+<!-- iCheck -->
+<script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
+<!-- Skycons -->
+<script src="{% static 'vendors/skycons/skycons.js' %}"></script>
+<!-- Flot -->
+<script src="{% static 'vendors/Flot/jquery.flot.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.pie.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.time.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.stack.js' %}"></script>
+<script src="{% static 'vendors/Flot/jquery.flot.resize.js' %}"></script>
+<!-- Flot plugins -->
+<script src="{% static 'vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+<script src="{% static 'vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+<script src="{% static 'vendors/flot.curvedlines/curvedLines.js' %}"></script>
+<!-- DateJS -->
+<script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
+<!-- JQVMap -->
+<script src="{% static 'vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+<script src="{% static 'vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+<script src="{% static 'vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %}"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<!-- Datatables -->
+<script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+<script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+<script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js' %}"></script>
+<script src="{% static 'vendors/jquery.hotkeys/jquery.hotkeys.js' %}"></script>
+<script src="{% static 'vendors/google-code-prettify/src/prettify.js' %}"></script>
+<!-- jQuery Tags Input -->
+<script src="{% static 'vendors/jquery.tagsinput/src/jquery.tagsinput.js' %}"></script>
+<!-- Switchery -->
+<script src="{% static 'vendors/switchery/dist/switchery.min.js' %}"></script>
+<!-- Select2 -->
+<script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+<!-- Parsley -->
+<script src="{% static 'vendors/parsleyjs/dist/parsley.min.js' %}"></script>
+<!-- Autosize -->
+<script src="{% static 'vendors/autosize/dist/autosize.min.js' %}"></script>
+<!-- jQuery autocomplete -->
+<script src="{% static 'vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js' %}"></script>
+<!-- starrr -->
+<script src="{% static 'vendors/starrr/dist/starrr.js' %}"></script>
+<script src="{% static 'js/toastr.min.js' %}"></script>
+<!-- Custom Theme Scripts -->
+<script src="{% static 'build/js/custom.min.js' %}"></script>
+<script src="{% static 'js/canvasjs.min.js' %}"></script>
+<script>
+    toastr.options.closeButton = true;
+    toastr.options.progressBar = true;
+    toastr.options.timeOut = 5000;
+    {% for message in messages %}
+        toastr.{{ message.tags }}("{{ message }}");
+    {% endfor %}
+</script>
+{% block 'script' %}
+{% endblock %}
+</body>
 </html>

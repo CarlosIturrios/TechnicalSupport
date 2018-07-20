@@ -384,7 +384,7 @@ def orderCancel(request, pk):
 
 
 @login_required()
-@permission_required('ordermanager.add_request')
+@permission_required('ordermanager.add_poll')
 def reports(request):
 	principal_requests = Request.objects.all()
 	if request.method == "POST":

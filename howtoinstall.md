@@ -1,4 +1,5 @@
 # How to install TechnicalSupport
+Install python version 2.7
 ## Clone git repository
 `git clone https://github.com/CarlosIturrios/TechnicalSupport.git`
 ## Install virtualenv library

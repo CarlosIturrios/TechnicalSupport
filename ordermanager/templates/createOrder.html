@@ -22,10 +22,16 @@
               <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
               <div class="col-md-9 col-sm-9 col-xs-12">
                 <select name="slequipment" class="form-control">
+                {% if equipments.count == 1 %}
+                    {% for equipment in equipments %}
+                  <option value="{{equipment.id}}" selected>{{ equipment.name }}</option>
+                    {% endfor %}
+                {% else %}
                   <option value="3" selected>Choose Equipment</option>
                   {% for equipment in equipments%}
                   <option value="{{equipment.id}}">{{ equipment.name }}</option>                  
                   {% endfor %}
+                {% endif %}
                 </select>
               </div>
             </div>
@@ -34,7 +40,7 @@
               <label class="control-label col-md-3 col-sm-3 col-xs-12">Trouble<span class="required"></span>
               </label>
               <div class="col-md-9 col-sm-9 col-xs-12">
-                <textarea name="comments" class="form-control" rows="3" placeholder='What is the problem? Explain us. be very specific!'></textarea>
+                <textarea name="comments" class="form-control" rows="3" placeholder='What is the problem? Explain us. be very specific!' required></textarea>
               </div>
             </div>
             <div class="ln_solid"></div>

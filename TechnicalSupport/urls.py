@@ -16,12 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic import RedirectView
 from django.conf.urls.static import static
 
 
 from ordermanager import urls
 
 urlpatterns = [
+     # Redirect / to WebPagRuedaDLV
+    url(r'^$', RedirectView.as_view(url='ordermanager/'), name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^ordermanager/', include(urls, namespace='ordermanager'))
 ]

@@ -3,58 +3,74 @@
 <!-- Estructura basica para diseño -->
 
 {% block 'main' %}
-<div class="right_col" role="main">
-  <div class="row">
-    <div class="col-md-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Do you request. <small>Soon you will be attending!</small></h2>
-          <ul class="nav navbar-right panel_toolbox">
-          </ul>
-          <div class="clearfix"></div>
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Do you request.
+                            <small>Soon you will be attending!</small>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="text-center">
+                            <h2 style="color: #2A3F54;"><strong>{% if maintype == '1' %} Maintenance of computer
+                                equipment {% elif maintype == '2' %} Software configuration {% elif maintype == '3' %}
+                                Software installation
+                            {% elif maintype == '4' %} Computer consulting {% elif maintype == '5' %} Audio {% else %}
+                                Events in general {% endif %}
+                            </strong></h2>
+                        </div>
+                        <form action="{% url 'ordermanager:createOrder' maintype %}" method="post"
+                              class="form-horizontal form-label-left">
+                            {% csrf_token %}
+                            {% if maintype == '1' or maintype == '6' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
+
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <select name="slequipment" class="form-control">
+                                            {% if equipments.count == 1 %}
+                                                {% for equipment in equipments %}
+                                                    <option value="{{ equipment.id }}"
+                                                            selected>{{ equipment.name }}</option>
+                                                {% endfor %}
+                                            {% else %}
+                                                <option value="3" selected>Choose Equipment</option>
+                                                {% for equipment in equipments %}
+                                                    <option value="{{ equipment.id }}">{{ equipment.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Trouble<span
+                                        class="required"></span>
+                                </label>
+
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <textarea name="comments" class="form-control" rows="3"
+                                              placeholder='What is the problem? Explain us. be very specific!'
+                                              required></textarea>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                    <a type="button" class="btn btn-danger" href="{% url 'ordermanager:principal' %}">Cancel</a>
+                                    <button type="reset" class="btn btn-primary">Reset</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="x_content">
-          <br />
-          <form action="{% url 'ordermanager:createOrder' maintype %}" method="post" class="form-horizontal form-label-left">
-            {% csrf_token %}
-            {% if maintype == '1' or maintype == '6' %}
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <select name="slequipment" class="form-control">
-                {% if equipments.count == 1 %}
-                    {% for equipment in equipments %}
-                  <option value="{{equipment.id}}" selected>{{ equipment.name }}</option>
-                    {% endfor %}
-                {% else %}
-                  <option value="3" selected>Choose Equipment</option>
-                  {% for equipment in equipments%}
-                  <option value="{{equipment.id}}">{{ equipment.name }}</option>                  
-                  {% endfor %}
-                {% endif %}
-                </select>
-              </div>
-            </div>
-            {% endif %}
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Trouble<span class="required"></span>
-              </label>
-              <div class="col-md-9 col-sm-9 col-xs-12">
-                <textarea name="comments" class="form-control" rows="3" placeholder='What is the problem? Explain us. be very specific!' required></textarea>
-              </div>
-            </div>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-              <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                <a type="button" class="btn btn-danger" href="{% url 'ordermanager:principal' %}">Cancel</a>
-                <button type="reset" class="btn btn-primary">Reset</button>
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
 {% endblock %}                

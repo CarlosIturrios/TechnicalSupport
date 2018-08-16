@@ -7,3 +7,4 @@ from . import models
 admin.site.register(models.Equipment)
 admin.site.register(models.Profile)
 admin.site.register(models.Request)
+admin.site.register(models.Activity)

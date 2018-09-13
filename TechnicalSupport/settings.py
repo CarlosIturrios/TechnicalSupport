@@ -130,19 +130,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'ordermanager/static'),
 ]
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if DEBUG:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-else:
-    MEDIA_ROOT = '/usr/share/nginx/ordermanager/media/'
-    STATIC_ROOT = '/usr/share/nginx/ordermanager/static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = '/ordermanager/login/'
 LOGIN_REDIRECT_URL = '/ordermanager/'
@@ -159,3 +155,9 @@ DEFAULT_FROM_EMAIL = 'UTSLRC <prueba@gmail.com>'
 ADMINS = (
     ('Carlos Iturrios', 'c.iturriosalcaraz@gmail.com'),
 )
+
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

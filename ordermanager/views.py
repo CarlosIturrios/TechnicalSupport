@@ -107,42 +107,49 @@ def dashboard(request):
     cancel = Request.objects.filter(status='3').count()
     pennding = Request.objects.filter(status='1').count()
     onProcess = Request.objects.filter(status='2').count()
-    done = Request.objects.filter(status='4').count()
-    done = float((done * 100) / allrequsts)
-    done = float(("%0.2f" % done))
-    onProcess = float((onProcess * 100) / allrequsts)
-    onProcess = float(("%0.2f" % onProcess))
-    pennding = float((pennding * 100) / allrequsts)
-    pennding = float(("%0.2f" % pennding))
-    cancel = float((cancel * 100) / allrequsts)
-    cancel = float(("%0.2f" % cancel))
-    if request.method == "POST":
-        date = request.POST.get('date', None)
-        dateTwo = request.POST.get('dateTwo', None)
-        cancelRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='3').count()
-        penndingRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='1').count()
-        onProcessRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='2').count()
-        doneRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='4').count()
-        allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
-        if allrequsts != 0:
-            cancel = Request.objects.filter(date_request__range=[date, dateTwo], status='3').count()
-            pennding = Request.objects.filter(date_request__range=[date, dateTwo], status='1').count()
-            onProcess = Request.objects.filter(date_request__range=[date, dateTwo], status='2').count()
-            done = Request.objects.filter(date_request__range=[date, dateTwo], status='4').count()
-            done = float((done * 100) / allrequsts)
-            done = float(("%0.2f" % done))
-            onProcess = float((onProcess * 100) / allrequsts)
-            onProcess = float(("%0.2f" % onProcess))
-            pennding = float((pennding * 100) / allrequsts)
-            pennding = float(("%0.2f" % pennding))
-            cancel = float((cancel * 100) / allrequsts)
-            cancel = float(("%0.2f" % cancel))
-        else:
-            done = 0
-            onProcess = 0
-            pennding = 0
-            cancel = 0
-            messages.error(request, 'There is not any request!')
+    if allrequsts == 0:
+        done = 0
+        onProcess = 0
+        pennding = 0
+        cancel = 0
+        messages.error(request, 'There is not any request!')
+    else:
+        done = Request.objects.filter(status='4').count()
+        done = float((done * 100) / allrequsts)
+        done = float(("%0.2f" % done))
+        onProcess = float((onProcess * 100) / allrequsts)
+        onProcess = float(("%0.2f" % onProcess))
+        pennding = float((pennding * 100) / allrequsts)
+        pennding = float(("%0.2f" % pennding))
+        cancel = float((cancel * 100) / allrequsts)
+        cancel = float(("%0.2f" % cancel))
+        if request.method == "POST":
+            date = request.POST.get('date', None)
+            dateTwo = request.POST.get('dateTwo', None)
+            cancelRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='3').count()
+            penndingRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='1').count()
+            onProcessRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='2').count()
+            doneRequest = Request.objects.filter(date_request__range=[date, dateTwo], status='4').count()
+            allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+            if allrequsts != 0:
+                cancel = Request.objects.filter(date_request__range=[date, dateTwo], status='3').count()
+                pennding = Request.objects.filter(date_request__range=[date, dateTwo], status='1').count()
+                onProcess = Request.objects.filter(date_request__range=[date, dateTwo], status='2').count()
+                done = Request.objects.filter(date_request__range=[date, dateTwo], status='4').count()
+                done = float((done * 100) / allrequsts)
+                done = float(("%0.2f" % done))
+                onProcess = float((onProcess * 100) / allrequsts)
+                onProcess = float(("%0.2f" % onProcess))
+                pennding = float((pennding * 100) / allrequsts)
+                pennding = float(("%0.2f" % pennding))
+                cancel = float((cancel * 100) / allrequsts)
+                cancel = float(("%0.2f" % cancel))
+            else:
+                done = 0
+                onProcess = 0
+                pennding = 0
+                cancel = 0
+                messages.error(request, 'There is not any request!')
     return render(request, 'dashboard.html', {
         'requests': requests,
         'cancelRequest': cancelRequest,
@@ -167,61 +174,68 @@ def request_type_dashboard(request):
     audioCount = Request.objects.filter(request_type='5').count()
     eventsGeneral = Request.objects.filter(request_type='6').count()
     allrequsts = float(Request.objects.all().count())
-    maintenance = Request.objects.filter(request_type='1').count()
-    maintenance = float((maintenance * 100) / allrequsts)
-    maintenance = float(("%0.2f" % maintenance))
-    configuration = Request.objects.filter(request_type='2').count()
-    configuration = float((configuration * 100) / allrequsts)
-    configuration = float(("%0.2f" % configuration))
-    installation = Request.objects.filter(request_type='3').count()
-    installation = float((installation * 100) / allrequsts)
-    installation = float(("%0.2f" % installation))
-    consulting = Request.objects.filter(request_type='4').count()
-    consulting = float((consulting * 100) / allrequsts)
-    consulting = float(("%0.2f" % consulting))
-    audio = Request.objects.filter(request_type='5').count()
-    audio = float((audio * 100) / allrequsts)
-    audio = float(("%0.2f" % audio))
-    events = Request.objects.filter(request_type='6').count()
-    events = float((events * 100) / allrequsts)
-    events = float(("%0.2f" % events))
-    if request.method == "POST":
-        date = request.POST.get('date', None)
-        dateTwo = request.POST.get('dateTwo', None)
-        maintenanceComputer = Request.objects.filter(date_request__range=[date, dateTwo], request_type='1').count()
-        softwareConfiguration = Request.objects.filter(date_request__range=[date, dateTwo], request_type='2').count()
-        softwareInstallation = Request.objects.filter(date_request__range=[date, dateTwo], request_type='3').count()
-        computerConsulting = Request.objects.filter(date_request__range=[date, dateTwo], request_type='4').count()
-        audioCount = Request.objects.filter(date_request__range=[date, dateTwo], request_type='5').count()
-        eventsGeneral = Request.objects.filter(date_request__range=[date, dateTwo], request_type='6').count()
-        allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
-        if allrequsts != 0:
-            maintenance = Request.objects.filter(date_request__range=[date, dateTwo], request_type='1').count()
-            maintenance = float((maintenance * 100) / allrequsts)
-            maintenance = float(("%0.2f" % maintenance))
-            configuration = Request.objects.filter(date_request__range=[date, dateTwo], request_type='2').count()
-            configuration = float((configuration * 100) / allrequsts)
-            configuration = float(("%0.2f" % configuration))
-            installation = Request.objects.filter(date_request__range=[date, dateTwo], request_type='3').count()
-            installation = float((installation * 100) / allrequsts)
-            installation = float(("%0.2f" % installation))
-            consulting = Request.objects.filter(date_request__range=[date, dateTwo], request_type='4').count()
-            consulting = float((consulting * 100) / allrequsts)
-            consulting = float(("%0.2f" % consulting))
-            audio = Request.objects.filter(date_request__range=[date, dateTwo], request_type='5').count()
-            audio = float((audio * 100) / allrequsts)
-            audio = float(("%0.2f" % audio))
-            events = Request.objects.filter(date_request__range=[date, dateTwo], request_type='6').count()
-            events = float((events * 100) / allrequsts)
-            events = float(("%0.2f" % events))
-        else:
-            maintenance = 0
-            configuration = 0
-            installation = 0
-            consulting = 0
-            audio = 0
-            events = 0
-            messages.error(request, 'There is not any request!')
+    if allrequsts == 0:
+        done = 0
+        onProcess = 0
+        pennding = 0
+        cancel = 0
+        messages.error(request, 'There is not any request!')
+    else:
+        maintenance = Request.objects.filter(request_type='1').count()
+        maintenance = float((maintenance * 100) / allrequsts)
+        maintenance = float(("%0.2f" % maintenance))
+        configuration = Request.objects.filter(request_type='2').count()
+        configuration = float((configuration * 100) / allrequsts)
+        configuration = float(("%0.2f" % configuration))
+        installation = Request.objects.filter(request_type='3').count()
+        installation = float((installation * 100) / allrequsts)
+        installation = float(("%0.2f" % installation))
+        consulting = Request.objects.filter(request_type='4').count()
+        consulting = float((consulting * 100) / allrequsts)
+        consulting = float(("%0.2f" % consulting))
+        audio = Request.objects.filter(request_type='5').count()
+        audio = float((audio * 100) / allrequsts)
+        audio = float(("%0.2f" % audio))
+        events = Request.objects.filter(request_type='6').count()
+        events = float((events * 100) / allrequsts)
+        events = float(("%0.2f" % events))
+        if request.method == "POST":
+            date = request.POST.get('date', None)
+            dateTwo = request.POST.get('dateTwo', None)
+            maintenanceComputer = Request.objects.filter(date_request__range=[date, dateTwo], request_type='1').count()
+            softwareConfiguration = Request.objects.filter(date_request__range=[date, dateTwo], request_type='2').count()
+            softwareInstallation = Request.objects.filter(date_request__range=[date, dateTwo], request_type='3').count()
+            computerConsulting = Request.objects.filter(date_request__range=[date, dateTwo], request_type='4').count()
+            audioCount = Request.objects.filter(date_request__range=[date, dateTwo], request_type='5').count()
+            eventsGeneral = Request.objects.filter(date_request__range=[date, dateTwo], request_type='6').count()
+            allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+            if allrequsts != 0:
+                maintenance = Request.objects.filter(date_request__range=[date, dateTwo], request_type='1').count()
+                maintenance = float((maintenance * 100) / allrequsts)
+                maintenance = float(("%0.2f" % maintenance))
+                configuration = Request.objects.filter(date_request__range=[date, dateTwo], request_type='2').count()
+                configuration = float((configuration * 100) / allrequsts)
+                configuration = float(("%0.2f" % configuration))
+                installation = Request.objects.filter(date_request__range=[date, dateTwo], request_type='3').count()
+                installation = float((installation * 100) / allrequsts)
+                installation = float(("%0.2f" % installation))
+                consulting = Request.objects.filter(date_request__range=[date, dateTwo], request_type='4').count()
+                consulting = float((consulting * 100) / allrequsts)
+                consulting = float(("%0.2f" % consulting))
+                audio = Request.objects.filter(date_request__range=[date, dateTwo], request_type='5').count()
+                audio = float((audio * 100) / allrequsts)
+                audio = float(("%0.2f" % audio))
+                events = Request.objects.filter(date_request__range=[date, dateTwo], request_type='6').count()
+                events = float((events * 100) / allrequsts)
+                events = float(("%0.2f" % events))
+            else:
+                maintenance = 0
+                configuration = 0
+                installation = 0
+                consulting = 0
+                audio = 0
+                events = 0
+                messages.error(request, 'There is not any request!')
     return render(request, 'request_type_dashboard.html', {
         'requests': requests,
         'maintenanceComputer': maintenanceComputer,
@@ -249,62 +263,69 @@ def department_dashboard(request):
     planningNumber = Request.objects.filter(user__profile__department='4').count()
     academicanNumber = Request.objects.filter(user__profile__department='5').count()
     allrequsts = float(Request.objects.all().count())
-    principal = Request.objects.filter(user__profile__department='1').count()
-    principal = float((principal * 100) / allrequsts)
-    principal = float(("%0.2f" % principal))
-    administration = Request.objects.filter(user__profile__department='2').count()
-    administration = float((administration * 100) / allrequsts)
-    administration = float(("%0.2f" % administration))
-    linking = Request.objects.filter(user__profile__department='3').count()
-    linking = float((linking * 100) / allrequsts)
-    linking = float(("%0.2f" % linking))
-    planning = Request.objects.filter(user__profile__department='4').count()
-    planning = float((planning * 100) / allrequsts)
-    planning = float(("%0.2f" % planning))
-    academican = Request.objects.filter(user__profile__department='5').count()
-    academican = float((academican * 100) / allrequsts)
-    academican = float(("%0.2f" % academican))
-    if request.method == "POST":
-        date = request.POST.get('date', None)
-        dateTwo = request.POST.get('dateTwo', None)
-        principalNumber = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                 user__profile__department='1').count()
-        administrationNumber = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                      user__profile__department='2').count()
-        linkingNumber = Request.objects.filter(date_request__range=[date, dateTwo],
-                                               user__profile__department='3').count()
-        planningNumber = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                user__profile__department='4').count()
-        academicanNumber = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                  user__profile__department='5').count()
-        allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
-        if allrequsts != 0:
-            principal = Request.objects.filter(date_request__range=[date, dateTwo],
-                                               user__profile__department='1').count()
-            principal = float((principal * 100) / allrequsts)
-            principal = float(("%0.2f" % principal))
-            administration = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                    user__profile__department='2').count()
-            administration = float((administration * 100) / allrequsts)
-            administration = float(("%0.2f" % administration))
-            linking = Request.objects.filter(date_request__range=[date, dateTwo], user__profile__department='3').count()
-            linking = float((linking * 100) / allrequsts)
-            linking = float(("%0.2f" % linking))
-            planning = Request.objects.filter(date_request__range=[date, dateTwo],
-                                              user__profile__department='4').count()
-            planning = float((planning * 100) / allrequsts)
-            planning = float(("%0.2f" % planning))
-            academican = Request.objects.filter(date_request__range=[date, dateTwo],
-                                                user__profile__department='5').count()
-            academican = float((academican * 100) / allrequsts)
-            academican = float(("%0.2f" % academican))
-        else:
-            principal = 0
-            administration = 0
-            linking = 0
-            planning = 0
-            academican = 0
-            messages.error(request, 'There is not any request!')
+    if allrequsts == 0:
+        done = 0
+        onProcess = 0
+        pennding = 0
+        cancel = 0
+        messages.error(request, 'There is not any request!')
+    else:
+        principal = Request.objects.filter(user__profile__department='1').count()
+        principal = float((principal * 100) / allrequsts)
+        principal = float(("%0.2f" % principal))
+        administration = Request.objects.filter(user__profile__department='2').count()
+        administration = float((administration * 100) / allrequsts)
+        administration = float(("%0.2f" % administration))
+        linking = Request.objects.filter(user__profile__department='3').count()
+        linking = float((linking * 100) / allrequsts)
+        linking = float(("%0.2f" % linking))
+        planning = Request.objects.filter(user__profile__department='4').count()
+        planning = float((planning * 100) / allrequsts)
+        planning = float(("%0.2f" % planning))
+        academican = Request.objects.filter(user__profile__department='5').count()
+        academican = float((academican * 100) / allrequsts)
+        academican = float(("%0.2f" % academican))
+        if request.method == "POST":
+            date = request.POST.get('date', None)
+            dateTwo = request.POST.get('dateTwo', None)
+            principalNumber = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                     user__profile__department='1').count()
+            administrationNumber = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                          user__profile__department='2').count()
+            linkingNumber = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                   user__profile__department='3').count()
+            planningNumber = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                    user__profile__department='4').count()
+            academicanNumber = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                      user__profile__department='5').count()
+            allrequsts = float(Request.objects.filter(date_request__range=[date, dateTwo]).count())
+            if allrequsts != 0:
+                principal = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                   user__profile__department='1').count()
+                principal = float((principal * 100) / allrequsts)
+                principal = float(("%0.2f" % principal))
+                administration = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                        user__profile__department='2').count()
+                administration = float((administration * 100) / allrequsts)
+                administration = float(("%0.2f" % administration))
+                linking = Request.objects.filter(date_request__range=[date, dateTwo], user__profile__department='3').count()
+                linking = float((linking * 100) / allrequsts)
+                linking = float(("%0.2f" % linking))
+                planning = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                  user__profile__department='4').count()
+                planning = float((planning * 100) / allrequsts)
+                planning = float(("%0.2f" % planning))
+                academican = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                    user__profile__department='5').count()
+                academican = float((academican * 100) / allrequsts)
+                academican = float(("%0.2f" % academican))
+            else:
+                principal = 0
+                administration = 0
+                linking = 0
+                planning = 0
+                academican = 0
+                messages.error(request, 'There is not any request!')
     return render(request, 'department_dashboard.html', {
         'requests': requests,
         'principalNumber': principalNumber,

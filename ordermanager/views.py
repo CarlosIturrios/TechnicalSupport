@@ -175,10 +175,12 @@ def request_type_dashboard(request):
     eventsGeneral = Request.objects.filter(request_type='6').count()
     allrequsts = float(Request.objects.all().count())
     if allrequsts == 0:
-        done = 0
-        onProcess = 0
-        pennding = 0
-        cancel = 0
+        maintenance = 0
+        configuration = 0
+        installation = 0
+        consulting = 0
+        audio = 0
+        events = 0
         messages.error(request, 'There is not any request!')
     else:
         maintenance = Request.objects.filter(request_type='1').count()
@@ -203,7 +205,8 @@ def request_type_dashboard(request):
             date = request.POST.get('date', None)
             dateTwo = request.POST.get('dateTwo', None)
             maintenanceComputer = Request.objects.filter(date_request__range=[date, dateTwo], request_type='1').count()
-            softwareConfiguration = Request.objects.filter(date_request__range=[date, dateTwo], request_type='2').count()
+            softwareConfiguration = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                           request_type='2').count()
             softwareInstallation = Request.objects.filter(date_request__range=[date, dateTwo], request_type='3').count()
             computerConsulting = Request.objects.filter(date_request__range=[date, dateTwo], request_type='4').count()
             audioCount = Request.objects.filter(date_request__range=[date, dateTwo], request_type='5').count()
@@ -264,10 +267,11 @@ def department_dashboard(request):
     academicanNumber = Request.objects.filter(user__profile__department='5').count()
     allrequsts = float(Request.objects.all().count())
     if allrequsts == 0:
-        done = 0
-        onProcess = 0
-        pennding = 0
-        cancel = 0
+        principal = 0
+        administration = 0
+        linking = 0
+        planning = 0
+        academican = 0
         messages.error(request, 'There is not any request!')
     else:
         principal = Request.objects.filter(user__profile__department='1').count()
@@ -308,7 +312,8 @@ def department_dashboard(request):
                                                         user__profile__department='2').count()
                 administration = float((administration * 100) / allrequsts)
                 administration = float(("%0.2f" % administration))
-                linking = Request.objects.filter(date_request__range=[date, dateTwo], user__profile__department='3').count()
+                linking = Request.objects.filter(date_request__range=[date, dateTwo],
+                                                 user__profile__department='3').count()
                 linking = float((linking * 100) / allrequsts)
                 linking = float(("%0.2f" % linking))
                 planning = Request.objects.filter(date_request__range=[date, dateTwo],

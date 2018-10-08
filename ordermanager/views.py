@@ -15,7 +15,7 @@ from django.conf import settings
 from django.db.models import Q
 
 from datetime import datetime
-from .models import Request, Poll, Activity, Comment, Equipment
+from .models import Request, Poll, Activity, Comment, Equipment, Preventive_Maintenance, Equipment_Maintenance
 
 
 # Create your views here.
@@ -55,21 +55,6 @@ def createOrder(request, int):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     maintype = int
     equipments = Equipment.objects.filter(responsible=request.user)
-    reques = Request.objects.filter(user=request.user)
-    for reque in reques:
-        if reque.status == '1' or reque.status == '2':
-            thepoll = Poll.objects.get(request_id=reque.id)
-            if thepoll.status == '1':
-                messages.error(request,
-                               'You have to wait the technical does the request and do the poll before'
-                               ' to create a new request!')
-                return redirect('ordermanager:principal')
-        elif reque.status == '4':
-            thepoll = Poll.objects.get(request_id=reque.id)
-            if thepoll.status == '1':
-                messages.error(request, 'You have to do the poll before to create a new request!')
-                return redirect('ordermanager:poll', thepoll.pk)
-
     if request.method == "POST":
         comments = request.POST.get('comments', None)
         req = Request()
@@ -83,7 +68,6 @@ def createOrder(request, int):
                 req.equipment_id = Equipment(id=slequipment)
         req.status = '1'
         req.comments = comments
-        req.date_onprocess = datetime.now()
         req.save()
         poll = Poll()
         poll.request_id = req
@@ -352,10 +336,11 @@ def orderPending(request):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     principal_requests = Request.objects.filter(~Q(status='2'), ~Q(status='3'),
                                                 ~Q(status='4'), user__profile__department='1')
-    admin_requests = Request.objects.filter(~Q(status='2'), ~Q(status='3'), ~Q(status='4'),
+    admin_requests = Request.objects.filter(~Q(status='2'), ~Q(status='3'), ~Q(status='4'), ~Q(status='5'),
                                             ~Q(user__profile__department='1')).order_by('user__groups')
+    pause_requests = Request.objects.filter(~Q(status='1'),~Q(status='2'), ~Q(status='3'), ~Q(status='4')).order_by('user__groups')
     return render(request, 'orderPending.html', {'requests': requests, 'principal_requests': principal_requests,
-                                                 'admin_requests': admin_requests})
+                                                 'admin_requests': admin_requests,'pause_requests':pause_requests})
 
 
 @login_required()
@@ -418,11 +403,23 @@ def orderCancel(request, pk):
     principal_request = get_object_or_404(Request, pk=pk)
     if request.method == "POST":
         principal_request.status = '3'
+        principal_request.technical = request.user
+        principal_request.date_cancel = datetime.now()
         principal_request.save()
         messages.error(request, 'The order was Canceled successfully!')
         return redirect('ordermanager:orderPending')
     return render(request, 'orderCancel.html', {'principal_request': principal_request})
 
+def orderPause(request, pk):
+    principal_request = get_object_or_404(Request, pk=pk)
+    if request.method == "POST":
+        principal_request.status = '5'
+        principal_request.technical = request.user
+        principal_request.date_pause = datetime.now()
+        principal_request.save()
+        messages.info(request, 'The order is on Pause!')
+        return redirect('ordermanager:orderPending')
+    return render(request, 'order_pause.html', {'principal_request': principal_request})
 
 @login_required()
 @permission_required('ordermanager.add_poll')
@@ -433,3 +430,41 @@ def reports(request):
         dateTwo = request.POST.get('dateTwo', None)
         principal_requests = Request.objects.filter(date_request__range=[date, dateTwo])
     return render(request, 'reports.html', {'principal_requests': principal_requests})
+
+
+@login_required()
+@permission_required('ordermanager.add_request')
+def CreateMaintenance(request):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    equipments = Equipment.objects.filter(responsible=request.user)
+    if request.method == "POST":
+        comments = request.POST.get('comments', None)
+        req = Preventive_Maintenance()
+        req.user = request.user
+        req.status = '1'
+        req.comments = comments
+        req.save()
+        for equipment in equipments:
+            equipmentMaintenance = Equipment_Maintenance()
+            equipmentMaintenance.preventive_maintenance_id = req
+            equipmentMaintenance.equipment_id = equipment
+            equipmentMaintenance.save()
+        messages.success(request, 'Your order was created successfully!')
+        return redirect('ordermanager:principal')
+    return render(request, 'create_order_maintenance.html', {'requests': requests, 'equipments': equipments})
+
+
+
+@login_required()
+@permission_required('ordermanager.add_request')
+def OrderObservations(request):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    orders = Request.objects.all()
+    return render(request, 'order_observations.html', {'requests': requests, 'orders':orders})
+
+
+@login_required()
+def orderShow(request, pk):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    principal_request = get_object_or_404(Request, pk=pk)
+    return render(request, 'order_show.html', {'requests': requests, 'principal_request': principal_request})

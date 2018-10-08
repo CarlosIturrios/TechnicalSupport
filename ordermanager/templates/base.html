@@ -48,7 +48,7 @@
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
-        <div class="col-md-3 left_col">
+        <div class="col-md-3 left_col menu_fixed">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="{% url 'ordermanager:principal' %}" class="site_title">
@@ -69,13 +69,21 @@
                             <li><a><i class="fa fa-edit"></i> Generate a new Order <span
                                     class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer
+                                    {% if user.groups.last.name == 'Preventive_Maintenance' %}
+                                        <li><a href="{% url 'ordermanager:CreateMaintenance' %}">Preventive or
+                                            Corrective Maintenance</a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer
                                         equipment</a></li>
-                                    <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a></li>
-                                    <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a></li>
-                                    <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a></li>
-                                    <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a>
+                                        </li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a>
+                                        </li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a>
+                                        </li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
                                     <li><a href="{% url 'ordermanager:createOrder' 6 %}">Events in general</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-desktop"></i>Order status <span
@@ -97,7 +105,7 @@
                                             <p>Enter to attend orders.</p></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-bar-chart-o"></i> Dashboard <span
+                                <li><a><i class="fa fa-pie-chart"></i> Dashboard <span
                                         class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{% url 'ordermanager:dashboard' %}">Total requests</a>
@@ -109,9 +117,16 @@
                                         <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a>
 
                                             <p>Dashboard</p></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-bar-chart"></i>Reports & Request panel <span
+                                        class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
                                         <li><a href="{% url 'ordermanager:reports' %}">Reports</a>
 
                                             <p>Table</p></li>
+                                        <li><a href="{% url 'ordermanager:OrderObservations' %}">Request panel.</a>
+                                            <p>See the request to get Feedback</p></li>
                                     </ul>
                                 </li>
                             {% elif user.groups.last.name == 'Director' %}
@@ -157,7 +172,8 @@
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <li>
-                                    <a href="//drive.google.com/open?id=1ksjY9D4JLgEn9h4o-Qhdhf5PepmpN2Tm" target="_blank"><i class="fa fa-question-circle pull-right"></i>Help</a>
+                                    <a href="//drive.google.com/open?id=1ksjY9D4JLgEn9h4o-Qhdhf5PepmpN2Tm"
+                                       target="_blank"><i class="fa fa-question-circle pull-right"></i>Help</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'ordermanager:logout' %}">

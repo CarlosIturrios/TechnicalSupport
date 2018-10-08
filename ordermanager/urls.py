@@ -12,14 +12,18 @@ urlpatterns = [
 
     # App views    
    	url(r'^$', views.principal, name='principal'),
-   	url(r'^createOrder/(?P<int>[0-9]+)/$', views.createOrder, name='createOrder'),
+   	url(r'^create-Order/(?P<int>[0-9]+)/$', views.createOrder, name='createOrder'),
    	url(r'^request-dashboard/$', views.dashboard, name='dashboard'),
     url(r'^department-dashboard/$', views.department_dashboard, name='department_dashboard'),
     url(r'^request-type-dashboard/$', views.request_type_dashboard, name='request_type_dashboard'),
-   	url(r'^orderPending/$', views.orderPending, name='orderPending'),
-   	url(r'^orderSupport/(?P<pk>[0-9]+)/$', views.orderSupport, name='orderSupport'),
+   	url(r'^order-Pending/$', views.orderPending, name='orderPending'),
+   	url(r'^order-Support/(?P<pk>[0-9]+)/$', views.orderSupport, name='orderSupport'),
    	url(r'^poll/(?P<pk>[0-9]+)/$', views.poll, name='poll'),
     url(r'^comment/$', views.comment, name='comment'), 
-    url(r'^orderCancel/(?P<pk>[0-9]+)/$', views.orderCancel, name='orderCancel'),
+    url(r'^order-Cancel/(?P<pk>[0-9]+)/$', views.orderCancel, name='orderCancel'),
+    url(r'^order-Pause/(?P<pk>[0-9]+)/$', views.orderPause, name='orderPause'),
     url(r'^reports/$', views.reports, name='reports'),
+    url(r'^Create-Maintenance/$', views.CreateMaintenance, name='CreateMaintenance'),
+    url(r'^Order-Observations/$', views.OrderObservations, name='OrderObservations'),
+    url(r'^order-Show/(?P<pk>[0-9]+)/$', views.orderShow, name='orderShow'),
 ]

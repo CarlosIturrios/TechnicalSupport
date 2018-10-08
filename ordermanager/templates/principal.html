@@ -3,175 +3,234 @@
 
 {% load humanize %}
 {% block 'main' %}
-<div class="right_col" role="main">
-  <div class="row">
-    {% if polls %}
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>You have polls pending.</h2>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content bs-example-popovers">     
-          {% for poll in polls %}
-          <a href="{% url 'ordermanager:poll' poll.pk %}">
-            <div  class="alert alert-danger alert-dismissible fade in" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span>
-              </button>
-              <strong>{{ poll }}</strong> 
-            </div>
-          </a>
-          {% empty %}
-          <li><a >No poll to show!</a></li>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Recent Activities <small>at the UT</small></h2> 
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>                    
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <div class="dashboard-widget-content">
-            <ul class="list-unstyled timeline widget">
-              {% for activitie in activities %}
-                {% if activitie.date_event|timesince <= "1 min" %}
-                <li>
-                  <div class="block">
-                    <div class="block_content">
-                      <h2 class="title">
-                       <strong>{{ activitie.tittle }}</strong> <small> {{activitie.date_request|naturaltime}}</small>
-                     </h2>
-                     <div class="byline">                   
-                      </div>
-                        <p class="excerpt">{{ activitie.description }} <strong>{{activitie.date_event|naturaltime}}</strong>
-                        </p>
+    <div class="right_col" role="main">
+        <div class="row">
+            {% if user.groups.last.name == 'Preventive_Maintenance' %}
+                <div id="Modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="false">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">x</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Make a new Maintenance to a laboratory</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h4>Press the button if you want to do Preventive or Corrective Maintanance
+                                    to {{ request.user.get_full_name }}</h4>
+
+                                <p>This Window is going to send you to the maintenance page to create a new request.</p>
+
+                                <p>If you want to do other thing in the system press de 'x' in the top of this
+                                    window or in the close button.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <a type="button" class="btn btn-primary"
+                                   href="{% url 'ordermanager:CreateMaintenance' %}">Make a new request.</a>
+                            </div>
+
+                        </div>
                     </div>
-                  </div>
-                </li>
-                {% endif %}
-              {% empty %}
-              <li>
-              <a>
+                </div>
+            {% endif %}
+            {% if polls %}
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>You have polls pending.</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content bs-example-popovers">
+                            {% for poll in polls %}
+                                <a href="{% url 'ordermanager:poll' poll.pk %}">
+                                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true"></span>
+                                        </button>
+                                        <strong>{{ poll }}</strong>
+                                    </div>
+                                </a>
+                            {% empty %}
+                                <li><a>No poll to show!</a></li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Recent Activities
+                            <small>at the UT</small>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="dashboard-widget-content">
+                            <ul class="list-unstyled timeline widget">
+                                {% for activitie in activities %}
+                                    {% if activitie.date_event|timesince <= "1 min" %}
+                                        <li>
+                                            <div class="block">
+                                                <div class="block_content">
+                                                    <h2 class="title">
+                                                        <strong>{{ activitie.tittle }}</strong>
+                                                        <small> {{ activitie.date_request|naturaltime }}</small>
+                                                    </h2>
+                                                    <div class="byline">
+                                                    </div>
+                                                    <p class="excerpt">{{ activitie.description }}
+                                                        <strong>{{ activitie.date_event|naturaltime }}</strong>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% empty %}
+                                    <li>
+                                        <a>
                 <span class="message">
                   No Activites to show!
                 </span>
-              </a>
-            </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div> 
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>The following five orders in process.</h2>{% if userrequest %} {% if numrequest == 0 %} <h2 style="color: blue;">&nbsp Your order is the next </h2> {% else %}<h2 style="color: blue;">&nbsp {{ numrequest }} before your request.</h2>{% endif %}{% endif %}
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content bs-example-popovers">     
-          {% for allrequest in allrequests %}
-          <div {% if allrequest.status == '2' %}class="alert alert-info alert-dismissible fade in" {% else %} class="alert alert-warning alert-dismissible fade in" {%endif%} role="alert">
-            {% if user.groups.last.name == 'Manager' or user.groups.last.name == 'Technical' %}
-            <a type="button" class="close" data-dismiss="alert" href="{% url 'ordermanager:orderSupport' allrequest.pk  %}" aria-label="Close"><span aria-hidden="true"> <i class="fa fa-question-circle"></i> </span>
-            </a>
-            {% endif %}
-            <strong>Status: {{ allrequest.get_status_display }}, Request type: {{ allrequest.get_request_type_display }}</strong> 
-          </div>
-          {% empty %}
-          <li><a >No request pending</a></li>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Users comments <small><a href="{% url 'ordermanager:comment' %}">Do us a comment about the Application!</a></small></h2>
-          <ul class="nav navbar-right panel_toolbox">                    
-           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-           </li>
-           <li><a class="close-link"><i class="fa fa-close"></i></a>
-           </li>                   
-         </ul>
-         <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <ul class="list-unstyled msg_list">
-            {% for comment in comments %}
-              <li>
-                <a>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>The following five orders in process.</h2>{% if userrequest %} {% if numrequest == 0 %}
+                        <h2 style="color: blue;">&nbsp Your order is the next </h2> {% else %}
+                        <h2 style="color: blue;">&nbsp {{ numrequest }} before your request.</h2>{% endif %}{% endif %}
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content bs-example-popovers">
+                        {% for allrequest in allrequests %}
+                            <div {% if allrequest.status == '2' %}class="alert alert-info alert-dismissible fade in" {% else %}
+                                 class="alert alert-warning alert-dismissible fade in" {% endif %} role="alert">
+                                {% if user.groups.last.name == 'Manager' or user.groups.last.name == 'Technical' %}
+                                    <a type="button" class="close" data-dismiss="alert"
+                                       href="{% url 'ordermanager:orderSupport' allrequest.pk %}"
+                                       aria-label="Close"><span aria-hidden="true"> <i
+                                            class="fa fa-question-circle"></i> </span>
+                                    </a>
+                                {% endif %}
+                                <strong>Status: {{ allrequest.get_status_display }}, Request
+                                    type: {{ allrequest.get_request_type_display }}</strong>
+                            </div>
+                        {% empty %}
+                            <li><a>No request pending</a></li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Users comments
+                            <small><a href="{% url 'ordermanager:comment' %}">Do us a comment about the Application!</a>
+                            </small>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <ul class="list-unstyled msg_list">
+                            {% for comment in comments %}
+                                <li>
+                                    <a>
                   <span class="image">
-                    <img src="{% static 'img/user.png' %}" alt="img" />
+                    <img src="{% static 'img/user.png' %}" alt="img"/>
                   </span>
                   <span>
-                    <strong>{{ comment.user.get_full_name }}</strong><small> {{comment.date_request|naturaltime}}</small>
+                    <strong>{{ comment.user.get_full_name }}</strong><small> {{ comment.date_request|naturaltime }}</small>
                   </span>
                   <span class="message">
                     {{ comment.comment }}
                   </span>
-                </a>
-              </li>
-            {% empty %}
-            <li>
-              <a>
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>
+                                    <a>
                 <span class="message">
                   No comments to show be the first!
                 </span>
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Your orders.</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content bs-example-popovers">
+                        {% for myrequest in myrequests %}
+                            <div {% if myrequest.status == '2' %}
+                                class="alert alert-info alert-dismissible fade in" {% elif myrequest.status == '4' %}
+                                class="alert alert-success alert-dismissible fade in" {% elif myrequest.status == '1' %}
+                                class="alert alert-warning alert-dismissible fade in" {% else %}
+                                class="alert alert-danger alert-dismissible fade in" {% endif %} role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true"></span>
+                                </button>
+                                <strong>{{ myrequest }}</strong>
+                            </div>
+                        {% empty %}
+                            <li><a>No request to show!</a></li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Your orders.</h2>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content bs-example-popovers">     
-          {% for myrequest in myrequests %}
-          <div {% if myrequest.status == '2' %} class="alert alert-info alert-dismissible fade in" {% elif myrequest.status == '4' %} class="alert alert-success alert-dismissible fade in" {% elif myrequest.status == '1' %}  class="alert alert-warning alert-dismissible fade in" {% else %} class="alert alert-danger alert-dismissible fade in" {% endif %} role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span>
-            </button>
-            <strong>{{ myrequest }}</strong> 
-          </div>
-          {% empty %}
-          <li><a >No request to show!</a></li>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{% endblock %}
+{% block 'script' %}
+    <script>
+        $(document).ready(function () {
+            if (document.cookie.indexOf('visited=true') == -1) {
+                // load the overlay
+                $('#Modal').modal({show: true});
+            }
+        });
+    </script>
 {% endblock %}

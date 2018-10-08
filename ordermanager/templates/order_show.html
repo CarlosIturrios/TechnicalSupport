@@ -8,9 +8,8 @@
             <div class="col-md-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Order Support!
-                            <small>Show the data and do the work!</small>
-                            <strong> DON'T FORGET PUT YOUR OBSERVATIONS!!</strong></h2>
+                        <h2>Every information about
+                            <strong>the order #{{ principal_request.id }} </strong></h2>
                         <ul class="nav navbar-right panel_toolbox">
                         </ul>
                         <div class="clearfix"></div>
@@ -35,6 +34,22 @@
                                 <div class="col-md-4 col-sm-4 col-xs-12">
                                     <input type="text" class="form-control" readonly="readonly"
                                            placeholder="{{ principal_request.user.get_full_name }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Deparment:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.user.profile.get_department_display }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Building:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.user.profile.get_building_display }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -64,32 +79,64 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Date:</label>
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Date create:</label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
                                     <input type="text" class="form-control" readonly="readonly"
-                                           placeholder="{{ principal_request.date_request|naturaltime }}">
+                                           placeholder="{{ principal_request.date_request|date:"D d M Y" }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Observations:<span
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Date on proccess:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.date_onprocess|date:"D d M Y" }}">
+                                </div>
+                            </div>
+                            {% if principal_request.status == '3' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date Canceled:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_cancel|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% elif principal_request.status == '4' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date Done:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_done|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% elif principal_request.status == '5' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date on pause:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_pause|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Observations:<span
                                         class="required"></span>
                                 </label>
 
-                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
                                     <textarea name="observations" class="form-control" rows="4"
-                                              placeholder='What was the solution!' required="True"></textarea>
+                                              readonly="readonly">{{ principal_request.observations }}</textarea>
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4">
-                                    <a type="button" class="btn btn-danger"
-                                       href="{% url 'ordermanager:orderCancel' principal_request.pk %}">Cancel</a>
-                                    <button type="reset" class="btn btn-primary">Reset</button>
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                    <a type="button" class="btn btn-info"
-                                       href="{% url 'ordermanager:orderPause' principal_request.pk %}">Set on pause</a>
+                                    <a type="button" class="btn btn-primary"
+                                       href="{% url 'ordermanager:OrderObservations' %}">Return</a>
                                 </div>
                             </div>
                         </form>

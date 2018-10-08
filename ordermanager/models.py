@@ -244,7 +244,7 @@ class Preventive_Maintenance(models.Model):
     date_pause = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return 'Request N: {0} Status: {1} Request type: {2}'.format(self.id, self.get_status_display(),
+        return 'Maintenance N: {0} Status: {1} Request type: {2}'.format(self.id, self.get_status_display(),
                                                                      self.get_request_type_display())
 
 

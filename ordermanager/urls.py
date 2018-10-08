@@ -26,4 +26,8 @@ urlpatterns = [
     url(r'^Create-Maintenance/$', views.CreateMaintenance, name='CreateMaintenance'),
     url(r'^Order-Observations/$', views.OrderObservations, name='OrderObservations'),
     url(r'^order-Show/(?P<pk>[0-9]+)/$', views.orderShow, name='orderShow'),
+    url(r'^Maintenance-Support/(?P<pk>[0-9]+)/$', views.MaintenanceSupport, name='MaintenanceSupport'),
+    url(r'^Maintenance-Cancel/(?P<pk>[0-9]+)/$', views.MaintenanceCancel, name='MaintenanceCancel'),
+    url(r'^Maintenance-Pause/(?P<pk>[0-9]+)/$', views.MaintenancePause, name='MaintenancePause'),
+    url(r'^Maintenance-Show/(?P<pk>[0-9]+)/$', views.MaintenanceShow, name='MaintenanceShow'),
 ]

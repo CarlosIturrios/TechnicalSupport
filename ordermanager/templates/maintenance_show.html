@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block 'main' %}
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Every information about
+                            <strong>the Maintenance #{{ principal_request.id }} </strong></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br/>
+
+                        <form action="{% url 'ordermanager:orderSupport' principal_request.pk %}" method="post"
+                              class="form-horizontal form-label-left">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">ID:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.id }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Laboratory:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.user.get_full_name }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Deparment:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.user.profile.get_department_display }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Building:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.user.profile.get_building_display }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Request type:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.get_request_type_display }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Equipment:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    {% for equipment in equipments %}
+                                        <span>{{ equipment.equipment_id.name }}. </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Problem:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <textarea type="text" class="form-control" rows="4" readonly="readonly"
+                                              placeholder="{{ principal_request.comments }}"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Date create:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.date_request|date:"D d M Y" }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Date on proccess:</label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="{{ principal_request.date_onprocess|date:"D d M Y" }}">
+                                </div>
+                            </div>
+                            {% if principal_request.status == '3' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date Canceled:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_cancel|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% elif principal_request.status == '4' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date Done:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_done|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% elif principal_request.status == '5' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12">Date on pause:</label>
+
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               placeholder="{{ principal_request.date_pause|date:"D d M Y" }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Observations:<span
+                                        class="required"></span>
+                                </label>
+
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <textarea name="observations" class="form-control" rows="4"
+                                              readonly="readonly">{{ principal_request.observations }}</textarea>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4">
+                                    <a type="button" class="btn btn-primary"
+                                       href="{% url 'ordermanager:OrderObservations' %}">Return</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

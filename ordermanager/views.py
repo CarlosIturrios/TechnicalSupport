@@ -338,9 +338,15 @@ def orderPending(request):
                                                 ~Q(status='4'), user__profile__department='1')
     admin_requests = Request.objects.filter(~Q(status='2'), ~Q(status='3'), ~Q(status='4'), ~Q(status='5'),
                                             ~Q(user__profile__department='1')).order_by('user__groups')
-    pause_requests = Request.objects.filter(~Q(status='1'),~Q(status='2'), ~Q(status='3'), ~Q(status='4')).order_by('user__groups')
+    pause_requests = Request.objects.filter(~Q(status='1'), ~Q(status='2'), ~Q(status='3'), ~Q(status='4')).order_by(
+        'user__groups')
+    maintenances = Preventive_Maintenance.objects.filter(~Q(status='2'), ~Q(status='3'), ~Q(status='4'), ~Q(status='5'))
+    maintenances_pause = Preventive_Maintenance.objects.filter(~Q(status='1'), ~Q(status='2'), ~Q(status='3'),
+                                                               ~Q(status='4'))
     return render(request, 'orderPending.html', {'requests': requests, 'principal_requests': principal_requests,
-                                                 'admin_requests': admin_requests,'pause_requests':pause_requests})
+                                                 'admin_requests': admin_requests, 'pause_requests': pause_requests,
+                                                 'maintenances': maintenances,
+                                                 'maintenances_pause': maintenances_pause})
 
 
 @login_required()
@@ -399,6 +405,7 @@ def comment(request):
 
 
 @login_required()
+@permission_required('ordermanager.add_request')
 def orderCancel(request, pk):
     principal_request = get_object_or_404(Request, pk=pk)
     if request.method == "POST":
@@ -410,6 +417,9 @@ def orderCancel(request, pk):
         return redirect('ordermanager:orderPending')
     return render(request, 'orderCancel.html', {'principal_request': principal_request})
 
+
+@login_required()
+@permission_required('ordermanager.add_request')
 def orderPause(request, pk):
     principal_request = get_object_or_404(Request, pk=pk)
     if request.method == "POST":
@@ -420,6 +430,7 @@ def orderPause(request, pk):
         messages.info(request, 'The order is on Pause!')
         return redirect('ordermanager:orderPending')
     return render(request, 'order_pause.html', {'principal_request': principal_request})
+
 
 @login_required()
 @permission_required('ordermanager.add_poll')
@@ -454,13 +465,14 @@ def CreateMaintenance(request):
     return render(request, 'create_order_maintenance.html', {'requests': requests, 'equipments': equipments})
 
 
-
 @login_required()
 @permission_required('ordermanager.add_request')
 def OrderObservations(request):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     orders = Request.objects.all()
-    return render(request, 'order_observations.html', {'requests': requests, 'orders':orders})
+    maintenances = Preventive_Maintenance.objects.all()
+    return render(request, 'order_observations.html',
+                  {'requests': requests, 'orders': orders, 'maintenances': maintenances})
 
 
 @login_required()
@@ -468,3 +480,62 @@ def orderShow(request, pk):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     principal_request = get_object_or_404(Request, pk=pk)
     return render(request, 'order_show.html', {'requests': requests, 'principal_request': principal_request})
+
+
+@login_required()
+@permission_required('ordermanager.add_request')
+def MaintenanceSupport(request, pk):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
+    equipments = Equipment_Maintenance.objects.filter(preventive_maintenance_id=principal_request)
+    if request.method == "GET":
+        principal_request.status = '2'
+        principal_request.technical = request.user
+        principal_request.date_onprocess = datetime.now()
+        principal_request.save()
+    elif request.method == "POST":
+        observations = request.POST.get('observations', None)
+        principal_request.status = '4'
+        principal_request.observations = observations
+        principal_request.date_done = datetime.now()
+        messages.success(request, 'The Maintenance is done!')
+        principal_request.save()
+        return redirect('ordermanager:orderPending')
+    return render(request, 'maintenance_support.html',
+                  {'requests': requests, 'principal_request': principal_request, 'equipments': equipments})
+
+
+@login_required()
+@permission_required('ordermanager.add_request')
+def MaintenanceCancel(request, pk):
+    principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
+    if request.method == "POST":
+        principal_request.status = '3'
+        principal_request.technical = request.user
+        principal_request.date_cancel = datetime.now()
+        principal_request.save()
+        messages.error(request, 'The maintenance was Canceled successfully!')
+        return redirect('ordermanager:orderPending')
+    return render(request, 'maintenance_cancel.html', {'principal_request': principal_request})
+
+
+@login_required()
+@permission_required('ordermanager.add_request')
+def MaintenancePause(request, pk):
+    principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
+    if request.method == "POST":
+        principal_request.status = '5'
+        principal_request.technical = request.user
+        principal_request.date_pause = datetime.now()
+        principal_request.save()
+        messages.info(request, 'The maintenance is on Pause!')
+        return redirect('ordermanager:orderPending')
+    return render(request, 'maintenance_pause.html', {'principal_request': principal_request})
+
+
+def MaintenanceShow(request, pk):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
+    equipments = Equipment_Maintenance.objects.filter(preventive_maintenance_id=principal_request)
+    return render(request, 'maintenance_show.html', {'requests': requests, 'principal_request': principal_request,
+                                               'equipments':equipments})

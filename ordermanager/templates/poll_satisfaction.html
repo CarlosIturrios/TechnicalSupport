@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+<!-- Estructura basica para diseño -->
+
+{% block 'main' %}
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="row top_tiles">
+                <div class="text-center">
+                    <form class="form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="date" name="date" required="True">
+                            <input type="date" name="dateTwo" required="True">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                </div>
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa fa-user"></i></div>
+                        <div class="count">{{ verySatisfied }}%</div>
+                        <h3>Very satisfied.</h3>
+                    </div>
+                </div>
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa fa-check-circle-o"></i></div>
+                        <div class="count">{{ satisfied }}%</div>
+                        <h3>Satisfied.</h3>
+                    </div>
+                </div>
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa fa-eye-slash"></i></div>
+                        <div class="count">{{ Unsatisfied }}%</div>
+                        <h3>Unsatisfied.</h3>
+
+                    </div>
+                </div>
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa fa-eye-slash"></i></div>
+                        <div class="count">{{ veryUnsatisfied }}%</div>
+                        <h3>Very Unsatisfied.</h3>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Dashboard</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="chartContainer1" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Dashboard</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="chartContainer2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Dashboard</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="chartContainer3" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Dashboard</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="chartContainer4" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Dashboard</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="chartContainer5" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block 'script' %}
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer1", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "Was it easy to request the service?"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        {y: {{ uno_verySatisfied }}, label: "Very satisfied"},
+                        {y: {{ uno_satisfied }}, label: "Satisfied"},
+                        {y: {{ uno_Unsatisfied }}, label: "Unsatisfied"},
+                        {y: {{ uno_veryUnsatisfied }}, label: "very Unsatisfied"},
+                    ]
+                }]
+            });
+            chart.render();
+            var chart = new CanvasJS.Chart("chartContainer2", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "What was the quality of the service?"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        {y: {{ dos_verySatisfied }}, label: "Very satisfied"},
+                        {y: {{ dos_satisfied }}, label: "Satisfied"},
+                        {y: {{ dos_Unsatisfied }}, label: "Unsatisfied"},
+                        {y: {{ dos_veryUnsatisfied }}, label: "very Unsatisfied"},
+                    ]
+                }]
+            });
+            chart.render();
+            var chart = new CanvasJS.Chart("chartContainer3", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "How do you feel about the behavior of the technician?"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        {y: {{ tres_verySatisfied }}, label: "Very satisfied"},
+                        {y: {{ tres_satisfied }}, label: "Satisfied"},
+                        {y: {{ tres_Unsatisfied }}, label: "Unsatisfied"},
+                        {y: {{ tres_veryUnsatisfied }}, label: "very Unsatisfied"},
+                    ]
+                }]
+            });
+            chart.render();
+            var chart = new CanvasJS.Chart("chartContainer4", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "How do you feel about the service the technician performed?"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        {y: {{ cuatro_verySatisfied }}, label: "Very satisfied"},
+                        {y: {{ cuatro_satisfied }}, label: "Satisfied"},
+                        {y: {{ cuatro_Unsatisfied }}, label: "Unsatisfied"},
+                        {y: {{ cuatro_veryUnsatisfied }}, label: "very Unsatisfied"},
+                    ]
+                }]
+            });
+            chart.render();
+            var chart = new CanvasJS.Chart("chartContainer5", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                exportEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "What is your level of satisfaction?"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 25,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        {y: {{ cinco_verySatisfied }}, label: "Very satisfied"},
+                        {y: {{ cinco_satisfied }}, label: "Satisfied"},
+                        {y: {{ cinco_Unsatisfied }}, label: "Unsatisfied"},
+                        {y: {{ cinco_veryUnsatisfied }}, label: "very Unsatisfied"},
+                    ]
+                }]
+            });
+            chart.render();
+
+        }
+    </script>
+{% endblock %} 

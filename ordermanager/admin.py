@@ -6,7 +6,4 @@ from . import models
 # Register your models here.
 admin.site.register(models.Equipment)
 admin.site.register(models.Profile)
-admin.site.register(models.Request)
 admin.site.register(models.Activity)
-admin.site.register(models.Equipment_Maintenance)
-admin.site.register(models.Preventive_Maintenance)

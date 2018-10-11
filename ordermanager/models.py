@@ -146,6 +146,7 @@ class Poll(models.Model):
     request_id = models.ForeignKey(
         Request, null=False, blank=True, related_name='request_set', on_delete=models.PROTECT
     )
+    date_request = models.DateTimeField(null=True, blank=False, auto_now_add=True)
 
     status = models.CharField(
         max_length=1, blank=False, default='1', choices=(

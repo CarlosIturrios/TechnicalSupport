@@ -538,8 +538,234 @@ def MaintenanceShow(request, pk):
     principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
     equipments = Equipment_Maintenance.objects.filter(preventive_maintenance_id=principal_request)
     return render(request, 'maintenance_show.html', {'requests': requests, 'principal_request': principal_request,
-                                               'equipments':equipments})
+                                                     'equipments': equipments})
+
 
 def error_404_view(request, exception):
     data = {"name": "ThePythonDjango.com"}
-    return render(request,'404_not_found.html', data)
+    return render(request, '404_not_found.html', data)
+
+
+@login_required()
+@permission_required('ordermanager.add_poll')
+def Poll_satisfaction(request):
+    requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
+    if request.method == "POST":
+        date = request.POST.get('date', None)
+        dateTwo = request.POST.get('dateTwo', None)
+        polls = Poll.objects.filter(date_request__range=[date, dateTwo], status='2')
+        polls_total = polls.count()
+    else:
+        polls = Poll.objects.filter(status='2')
+        polls_total = polls.count()
+
+    verySatisfied = 0
+    satisfied = 0
+    Unsatisfied = 0
+    veryUnsatisfied = 0
+
+    uno_verySatisfied = 0
+    dos_verySatisfied = 0
+    tres_verySatisfied = 0
+    cuatro_verySatisfied = 0
+    cinco_verySatisfied = 0
+
+    uno_satisfied = 0
+    dos_satisfied = 0
+    tres_satisfied = 0
+    cuatro_satisfied = 0
+    cinco_satisfied = 0
+
+    uno_Unsatisfied = 0
+    dos_Unsatisfied = 0
+    tres_Unsatisfied = 0
+    cuatro_Unsatisfied = 0
+    cinco_Unsatisfied = 0
+
+    uno_veryUnsatisfied = 0
+    dos_veryUnsatisfied = 0
+    tres_veryUnsatisfied = 0
+    cuatro_veryUnsatisfied = 0
+    cinco_veryUnsatisfied = 0
+
+    for poll in polls:
+        if poll.answer == '1':
+            uno_verySatisfied += 1
+        elif poll.answer == '2':
+            uno_satisfied += 1
+        elif poll.answer == '3':
+            uno_Unsatisfied += 1
+        elif poll.answer == '4':
+            uno_veryUnsatisfied += 1
+
+        if poll.answerTwo == '1':
+            dos_verySatisfied += 1
+        elif poll.answerTwo == '2':
+            dos_satisfied += 1
+        elif poll.answerTwo == '3':
+            dos_Unsatisfied += 1
+        elif poll.answerTwo == '4':
+            dos_veryUnsatisfied += 1
+
+        if poll.answerThree == '1':
+            tres_verySatisfied += 1
+        elif poll.answerThree == '2':
+            tres_satisfied += 1
+        elif poll.answerThree == '3':
+            tres_Unsatisfied += 1
+        elif poll.answerThree == '4':
+            tres_veryUnsatisfied += 1
+
+        if poll.answerFour == '1':
+            cuatro_verySatisfied += 1
+        elif poll.answerFour == '2':
+            cuatro_satisfied += 1
+        elif poll.answerFour == '3':
+            cuatro_Unsatisfied += 1
+        elif poll.answerFour == '4':
+            cuatro_veryUnsatisfied += 1
+
+        if poll.answerFive == '1':
+            cinco_verySatisfied += 1
+        elif poll.answerFive == '2':
+            cinco_satisfied += 1
+        elif poll.answerFive == '3':
+            cinco_Unsatisfied += 1
+        elif poll.answerFive == '4':
+            cinco_veryUnsatisfied += 1
+    if polls_total == 0:
+        verySatisfied = 0
+        satisfied = 0
+        Unsatisfied = 0
+        veryUnsatisfied = 0
+
+        uno_verySatisfied = 0
+        dos_verySatisfied = 0
+        tres_verySatisfied = 0
+        cuatro_verySatisfied = 0
+        cinco_verySatisfied = 0
+
+        cinco_satisfied = 0
+        uno_satisfied = 0
+        dos_satisfied = 0
+        tres_satisfied = 0
+        cuatro_satisfied = 0
+        cinco_satisfied = 0
+
+        uno_Unsatisfied = 0
+        dos_Unsatisfied = 0
+        tres_Unsatisfied = 0
+        cuatro_Unsatisfied = 0
+        cinco_Unsatisfied = 0
+
+        uno_veryUnsatisfied = 0
+        dos_veryUnsatisfied = 0
+        tres_veryUnsatisfied = 0
+        cuatro_veryUnsatisfied = 0
+        cinco_veryUnsatisfied = 0
+        messages.error(request, 'There is not any poll!')
+    else:
+        verySatisfied = uno_verySatisfied + dos_verySatisfied + tres_verySatisfied + cuatro_verySatisfied + cinco_verySatisfied
+        verySatisfied = float(((verySatisfied * 100) / polls_total) / 5)
+        verySatisfied = float(("%0.2f" % verySatisfied))
+
+        satisfied = uno_satisfied + dos_satisfied + tres_satisfied + cuatro_satisfied + cinco_satisfied
+        satisfied = float(((satisfied * 100) / polls_total) / 5)
+        satisfied = float(("%0.2f" % satisfied))
+
+        Unsatisfied = uno_Unsatisfied + dos_Unsatisfied + tres_Unsatisfied + cuatro_Unsatisfied + cinco_Unsatisfied
+        Unsatisfied = float(((Unsatisfied * 100) / polls_total) / 5)
+        Unsatisfied = float(("%0.2f" % Unsatisfied))
+
+        veryUnsatisfied = uno_veryUnsatisfied + dos_veryUnsatisfied + tres_veryUnsatisfied + cuatro_veryUnsatisfied + cinco_veryUnsatisfied
+        veryUnsatisfied = float(((veryUnsatisfied * 100) / polls_total) / 5)
+        veryUnsatisfied = float(("%0.2f" % veryUnsatisfied))
+
+        # obtenner el valor de la pregunta uno y todos sus porcentajes
+        uno_verySatisfied = float((uno_verySatisfied * 100) / polls_total)
+        uno_verySatisfied = float(("%0.2f" % uno_verySatisfied))
+
+        uno_satisfied = float((uno_satisfied * 100) / polls_total)
+        uno_satisfied = float(("%0.2f" % uno_satisfied))
+
+        uno_Unsatisfied = float((uno_Unsatisfied * 100) / polls_total)
+        uno_Unsatisfied = float(("%0.2f" % uno_Unsatisfied))
+
+        uno_veryUnsatisfied = float((uno_veryUnsatisfied * 100) / polls_total)
+        uno_veryUnsatisfied = float(("%0.2f" % uno_veryUnsatisfied))
+        # obtenner el valor de la pregunta dos y todos sus porcentajes
+        dos_verySatisfied = float((dos_verySatisfied * 100) / polls_total)
+        dos_verySatisfied = float(("%0.2f" % dos_verySatisfied))
+
+        dos_satisfied = float((dos_satisfied * 100) / polls_total)
+        dos_satisfied = float(("%0.2f" % dos_satisfied))
+
+        dos_Unsatisfied = float((uno_Unsatisfied * 100) / polls_total)
+        dos_Unsatisfied = float(("%0.2f" % uno_Unsatisfied))
+
+        dos_veryUnsatisfied = float((dos_veryUnsatisfied * 100) / polls_total)
+        dos_veryUnsatisfied = float(("%0.2f" % dos_veryUnsatisfied))
+        # obtenner el valor de la pregunta tres y todos sus porcentajes
+        tres_verySatisfied = float((tres_verySatisfied * 100) / polls_total)
+        tres_verySatisfied = float(("%0.2f" % tres_verySatisfied))
+
+        tres_satisfied = float((tres_satisfied * 100) / polls_total)
+        tres_satisfied = float(("%0.2f" % tres_satisfied))
+
+        tres_Unsatisfied = float((tres_Unsatisfied * 100) / polls_total)
+        tres_Unsatisfied = float(("%0.2f" % tres_Unsatisfied))
+
+        tres_veryUnsatisfied = float((tres_veryUnsatisfied * 100) / polls_total)
+        tres_veryUnsatisfied = float(("%0.2f" % tres_veryUnsatisfied))
+        # obtenner el valor de la pregunta cuatro y todos sus porcentajes
+        cuatro_verySatisfied = float((cuatro_verySatisfied * 100) / polls_total)
+        cuatro_verySatisfied = float(("%0.2f" % cuatro_verySatisfied))
+
+        cuatro_satisfied = float((cuatro_satisfied * 100) / polls_total)
+        cuatro_satisfied = float(("%0.2f" % cuatro_satisfied))
+
+        cuatro_Unsatisfied = float((cuatro_Unsatisfied * 100) / polls_total)
+        cuatro_Unsatisfied = float(("%0.2f" % cuatro_Unsatisfied))
+
+        cuatro_veryUnsatisfied = float((cuatro_veryUnsatisfied * 100) / polls_total)
+        cuatro_veryUnsatisfied = float(("%0.2f" % cuatro_veryUnsatisfied))
+        # obtenner el valor de la pregunta cinco y todos sus porcentajes
+        cinco_verySatisfied = float((cinco_verySatisfied * 100) / polls_total)
+        cinco_verySatisfied = float(("%0.2f" % cinco_verySatisfied))
+
+        cinco_satisfied = float((cinco_satisfied * 100) / polls_total)
+        cinco_satisfied = float(("%0.2f" % cinco_satisfied))
+
+        cinco_Unsatisfied = float((cinco_Unsatisfied * 100) / polls_total)
+        cinco_Unsatisfied = float(("%0.2f" % cinco_Unsatisfied))
+
+        cinco_veryUnsatisfied = float((cinco_veryUnsatisfied * 100) / polls_total)
+        cinco_veryUnsatisfied = float(("%0.2f" % cinco_veryUnsatisfied))
+
+    return render(request, 'poll_satisfaction.html', {
+        'requests': requests,
+        'verySatisfied': verySatisfied,
+        'satisfied': satisfied,
+        'Unsatisfied': Unsatisfied,
+        'veryUnsatisfied': veryUnsatisfied,
+        'uno_verySatisfied': uno_verySatisfied,
+        'dos_verySatisfied': dos_verySatisfied,
+        'tres_verySatisfied': tres_verySatisfied,
+        'cuatro_verySatisfied': cuatro_verySatisfied,
+        'cinco_verySatisfied': cinco_verySatisfied,
+        'uno_satisfied': uno_satisfied,
+        'dos_satisfied': dos_satisfied,
+        'tres_satisfied': tres_satisfied,
+        'cuatro_satisfied': cuatro_satisfied,
+        'cinco_satisfied': cinco_satisfied,
+        'uno_Unsatisfied': uno_Unsatisfied,
+        'dos_Unsatisfied': dos_Unsatisfied,
+        'tres_Unsatisfied': tres_Unsatisfied,
+        'cuatro_Unsatisfied': cuatro_Unsatisfied,
+        'cinco_Unsatisfied': cinco_Unsatisfied,
+        'uno_veryUnsatisfied': uno_veryUnsatisfied,
+        'dos_veryUnsatisfied': dos_veryUnsatisfied,
+        'tres_veryUnsatisfied': tres_veryUnsatisfied,
+        'cuatro_veryUnsatisfied': cuatro_veryUnsatisfied,
+        'cinco_veryUnsatisfied': cinco_veryUnsatisfied
+    })

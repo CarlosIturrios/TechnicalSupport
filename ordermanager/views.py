@@ -539,3 +539,7 @@ def MaintenanceShow(request, pk):
     equipments = Equipment_Maintenance.objects.filter(preventive_maintenance_id=principal_request)
     return render(request, 'maintenance_show.html', {'requests': requests, 'principal_request': principal_request,
                                                'equipments':equipments})
+
+def error_404_view(request, exception):
+    data = {"name": "ThePythonDjango.com"}
+    return render(request,'404_not_found.html', data)

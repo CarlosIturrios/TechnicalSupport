@@ -304,7 +304,7 @@ html , body{
     margin-top: 5px;
     font-size: 10px;
     min-width: inherit;
-    color: #C4CFDA
+    color: #C4CFDA;
 }
 .active a span.fa {
     text-align: right !important;

@@ -89,7 +89,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'UtSistemaSolicitudes',
             'USER': 'UtSistemaSolicitudes',
-            'PASSWORD':'##sistemas##',
+            'PASSWORD':'##Sistemas2018##',
             'HOST': '127.0.0.1',
         }
     }

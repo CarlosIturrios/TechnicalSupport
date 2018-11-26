@@ -352,10 +352,12 @@ def orderPending(request):
     maintenances = Preventive_Maintenance.objects.filter(~Q(status='2'), ~Q(status='3'), ~Q(status='4'), ~Q(status='5'))
     maintenances_pause = Preventive_Maintenance.objects.filter(~Q(status='1'), ~Q(status='2'), ~Q(status='3'),
                                                                ~Q(status='4'))
+    maintenances_on_process = Preventive_Maintenance.objects.filter(status = '2')
     return render(request, 'orderPending.html', {'requests': requests, 'principal_requests': principal_requests,
                                                  'admin_requests': admin_requests, 'pause_requests': pause_requests,
                                                  'maintenances': maintenances,
-                                                 'maintenances_pause': maintenances_pause})
+                                                 'maintenances_pause': maintenances_pause,
+                                                 'maintenances_on_process':maintenances_on_process})
 
 
 @login_required()

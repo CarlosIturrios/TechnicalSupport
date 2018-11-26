@@ -174,8 +174,8 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <table id="datatable-responsive"
-                                   class="table table-striped table-bordered dt-responsive nowrap"
+                            <table id="datatable"
+                                   class="table table-striped table-bordered"
                                    cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
@@ -223,6 +223,24 @@
                                         <td>{{ maintenance_pause.date_request|naturaltime }}</td>
                                         <td>{{ maintenance_pause.user.profile.get_department_display }}</td>
                                         <td>{{ maintenance_pause.user.profile.get_building_display }}</td>
+                                    </tr>
+                                {% empty %}
+                                {% endfor %}
+                                {% for maintenance_on_process in maintenances_on_process %}
+                                    <tr>
+                                        <td>
+                                            <a class="btn btn-info"
+                                            href="{% url 'ordermanager:MaintenanceSupport' maintenance_on_process.pk %}"
+                                            >{{ maintenance_on_process.id }}</a>
+                                        </td>
+                                        <td>{{ maintenance_on_process.user.get_full_name }}</td>
+                                        <td>{{ maintenance_on_process.get_request_type_display }}</td>
+                                        <td>
+                                            {{ maintenance_on_process.get_status_display }}
+                                        </td>
+                                        <td>{{ maintenance_on_process.date_request|naturaltime }}</td>
+                                        <td>{{ maintenance_on_process.user.profile.get_department_display }}</td>
+                                        <td>{{ maintenance_on_process.user.profile.get_building_display }}</td>
                                     </tr>
                                 {% empty %}
                                 {% endfor %}

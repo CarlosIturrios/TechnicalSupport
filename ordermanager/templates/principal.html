@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% load static %}
 
-{% load humanize %}
 {% block 'main' %}
     <div class="right_col" role="main">
         <div class="row">
@@ -251,6 +251,7 @@
             </div>
         </div>
     </div>
+    <script>setTimeout('document.location.reload()', 90000); </script>
 {% endblock %}
 {% block 'script' %}
     <script>
@@ -261,5 +262,4 @@
             }
         });
     </script>
-    <script>setTimeout('document.location.reload()', 300000); </script>
 {% endblock %}

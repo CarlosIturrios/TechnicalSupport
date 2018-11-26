@@ -45,11 +45,12 @@ class Request(models.Model):
     request_type = models.CharField(
         max_length=1, blank=False, default='1', choices=(
             ('1', 'Maintenance of computer equipment'),
-            ('2', 'Software configuration'),
+            ('2', 'Configuration in general'),
             ('3', 'Software installation'),
             ('4', 'Computer consulting'),
-            ('5', 'Audio'),
-            ('6', 'Events in general')
+            ('5', 'Audio and Events'),
+            ('6', 'Problems in general'),
+            ('7', 'Problems in Laboratories'),
         )
     )
     equipment_id = models.ForeignKey(

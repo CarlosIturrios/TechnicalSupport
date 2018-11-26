@@ -71,6 +71,22 @@
                                            placeholder="{{ principal_request.date_request|naturaltime }}">
                                 </div>
                             </div>
+                            {% if principal_request.request_type == '7' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
+
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <select name="equipment" class="form-control">
+                                            <option value="3" selected>There is not equipment required</option>
+                                            {% for equipment in equipments %}
+                                                <option value="{{ equipment.id }}">{{ equipment.name }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            {% endif %}
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Observations:<span
                                         class="required"></span>
@@ -83,13 +99,14 @@
                             </div>
                             <div class="ln_solid"></div>
                             <div class="form-group">
-                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4">
+                                <div class="col-md-9 col-sm-9 col-xs-12">
                                     <a type="button" class="btn btn-danger"
                                        href="{% url 'ordermanager:orderCancel' principal_request.pk %}">Cancel</a>
                                     <button type="reset" class="btn btn-primary">Reset</button>
                                     <button type="submit" class="btn btn-success">Submit</button>
-                                    <a type="button" class="btn btn-info"
-                                       href="{% url 'ordermanager:orderPause' principal_request.pk %}">Set on pause</a>
+                                    <br><br><a type="button" class="btn btn-info"
+                                               href="{% url 'ordermanager:orderPause' principal_request.pk %}">Set on
+                                    pause</a>
                                 </div>
                             </div>
                         </form>

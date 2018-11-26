@@ -18,16 +18,19 @@
                     <div class="x_content">
                         <div class="text-center">
                             <h2 style="color: #2A3F54;"><strong>{% if maintype == '1' %} Maintenance of computer
-                                equipment {% elif maintype == '2' %} Software configuration {% elif maintype == '3' %}
+                                equipment {% elif maintype == '2' %} Configuration in general {% elif maintype == '3' %}
                                 Software installation
-                            {% elif maintype == '4' %} Computer consulting {% elif maintype == '5' %} Audio {% else %}
-                                Events in general {% endif %}
+                            {% elif maintype == '4' %} Computer consulting {% elif maintype == '5' %} Audio and Events
+                            {% elif maintype == '6' %}
+                                Problems in general
+                            {% else %}
+                                Problems in laboratories  {% endif %}
                             </strong></h2>
                         </div>
                         <form action="{% url 'ordermanager:createOrder' maintype %}" method="post"
                               class="form-horizontal form-label-left">
                             {% csrf_token %}
-                            {% if maintype == '1' or maintype == '6' %}
+                            {% if maintype == '1' %}
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Equipment</label>
 
@@ -48,6 +51,23 @@
                                     </div>
                                 </div>
                             {% endif %}
+                            {% if maintype == '7' %}
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Laboratory:
+                                    </label>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="laboratory" class="form-control" required>
+                                            {% for laboratory in laboratories %}
+                                                <option value="{{ laboratory.id }}"> {{ laboratory.get_full_name }}
+                                                </option>
+                                            {% empty %}
+                                                there are not laboratories registered.
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% endif %}
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Trouble<span
                                         class="required"></span>
@@ -55,8 +75,12 @@
 
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <textarea name="comments" class="form-control" rows="3"
-                                              placeholder='What is the problem? Explain us. be very specific!'
-                                              required></textarea>
+                                              placeholder= {% if maintype == '7' %}
+                                                  'Please write the problem and be very specific, DO NOT  FORGET WRITE THE COMPUTER THAT HAS THE PROBLEM.'
+                                              {% else %}
+                                                  'What is the problem? Explain us. be very specific!'
+                                              {% endif %}
+                                    required></textarea>
                                 </div>
                             </div>
                             <div class="ln_solid"></div>

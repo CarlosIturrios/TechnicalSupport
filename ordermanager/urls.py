@@ -3,7 +3,6 @@ from django.contrib.auth import views as auth_views
 
 from . import views
 
-
 urlpatterns = [
     
     # Auth Urls
@@ -31,4 +30,5 @@ urlpatterns = [
     url(r'^Maintenance-Pause/(?P<pk>[0-9]+)/$', views.MaintenancePause, name='MaintenancePause'),
     url(r'^Maintenance-Show/(?P<pk>[0-9]+)/$', views.MaintenanceShow, name='MaintenanceShow'),
     url(r'^Poll-satisfaction/$', views.Poll_satisfaction, name='Poll_satisfaction'),
+    url(r'^Change-password/$', views.change_password, name='change_password'),
 ]

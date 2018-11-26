@@ -52,7 +52,7 @@
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="{% url 'ordermanager:principal' %}" class="site_title">
-                        <img src="{% static 'img/Icono.png' %}" width="60px" height="60px"> <span>UTSLRC</span></a></a>
+                        <img src="{% static 'img/Icono.png' %}" width="60px" height="60px"> <span>UTSLRC</span></a>
                 </div>
 
                 <br/>
@@ -74,15 +74,19 @@
                                             Corrective Maintenance</a></li>
                                     {% else %}
                                         <li><a href="{% url 'ordermanager:createOrder' 1 %}">Maintenance of computer
-                                        equipment</a></li>
-                                        <li><a href="{% url 'ordermanager:createOrder' 2 %}">Software configuration</a>
+                                            equipment</a></li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 2 %}">Configuration in
+                                            general</a>
                                         </li>
                                         <li><a href="{% url 'ordermanager:createOrder' 3 %}">Software installation</a>
                                         </li>
                                         <li><a href="{% url 'ordermanager:createOrder' 4 %}">Computer consulting</a>
                                         </li>
-                                        <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio</a></li>
-                                    <li><a href="{% url 'ordermanager:createOrder' 6 %}">Events in general</a></li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 5 %}">Audio and Events</a></li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 6 %}">Problems in general</a>
+                                        </li>
+                                        <li><a href="{% url 'ordermanager:createOrder' 7 %}">Problems in
+                                            Laboratories</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
@@ -117,7 +121,8 @@
                                         <li><a href="{% url 'ordermanager:department_dashboard' %}">Department</a>
 
                                             <p>Dashboard</p></li>
-                                        <li><a href="{% url 'ordermanager:Poll_satisfaction' %}">Poll of user satisfaction</a>
+                                        <li><a href="{% url 'ordermanager:Poll_satisfaction' %}">Poll of user
+                                            satisfaction</a>
 
                                             <p>Dashboard</p></li>
                                     </ul>
@@ -129,6 +134,7 @@
 
                                             <p>Table</p></li>
                                         <li><a href="{% url 'ordermanager:OrderObservations' %}">Request panel.</a>
+
                                             <p>See the request to get Feedback</p></li>
                                     </ul>
                                 </li>
@@ -148,7 +154,8 @@
                                         <li><a href="{% url 'ordermanager:reports' %}">Reports</a>
 
                                             <p>Dashboard</p></li>
-                                        <li><a href="{% url 'ordermanager:Poll_satisfaction' %}">Poll of user satisfaction</a>
+                                        <li><a href="{% url 'ordermanager:Poll_satisfaction' %}">Poll of user
+                                            satisfaction</a>
 
                                             <p>Dashboard</p></li>
                                     </ul>
@@ -185,6 +192,12 @@
                                     <a href="{% static 'OrderManager.apk' %}"
                                        download="OrderManager.apk">
                                         <i class="fa fa-android pull-right"></i>Download Android App</a>
+                                </li>
+
+                                <li>
+                                    <a href="{% url 'ordermanager:change_password' %}">
+                                        <i class="fa fa-unlock pull-right"></i> Change password
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="{% url 'ordermanager:logout' %}">

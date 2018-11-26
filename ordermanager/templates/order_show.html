@@ -68,7 +68,7 @@
                                            placeholder="{{ principal_request.get_request_type_display }}">
                                 </div>
                             </div>
-                            {% if principal_request.request_type == '1' or principal_request.request_type == '6' %}
+                            {% if principal_request.equipment_id %}
                                 <div class="form-group">
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12">Equipment:</label>
 
@@ -144,7 +144,11 @@
                             <div class="form-group">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-4">
                                     <a type="button" class="btn btn-primary"
-                                       href="{% url 'ordermanager:OrderObservations' %}">Return</a>
+                                       {% if user.groups.last.name == 'Technical' or user.groups.last.name == 'Manager' %}
+                                       href="{% url 'ordermanager:OrderObservations' %}" {% else %}
+                                       href="{% url 'ordermanager:principal' %}"
+                                       {% endif %}
+                                            >Return</a>
                                 </div>
                             </div>
                         </form>

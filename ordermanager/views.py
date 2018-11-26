@@ -8,8 +8,10 @@ from django.template import Context  # email sender
 from django.template.loader import render_to_string, get_template  # email sender
 from django.core.mail import EmailMessage, EmailMultiAlternatives  # email sender
 from django.core.paginator import Paginator
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.conf import settings
 from django.db.models import Q
@@ -22,7 +24,7 @@ from .models import Request, Poll, Activity, Comment, Equipment, Preventive_Main
 @login_required()
 def principal(request):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
-    allrequests = Request.objects.filter(~Q(status='3'), ~Q(status='4')).order_by('status').reverse()[:5]
+    allrequests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), ~Q(status='5')).order_by('status').reverse()[:5]
     myrequests = Request.objects.filter(user=request.user).order_by('status')
     comments = Comment.objects.all().order_by('id').reverse()[:5]
     activities = Activity.objects.all().order_by('id').reverse()
@@ -30,10 +32,8 @@ def principal(request):
     numrequest = Request.objects.filter(~Q(status='3'), ~Q(status='4')).order_by('status').reverse().count()
     userrequest = Request.objects.filter(user=request.user, status='1').first()
     if userrequest:
-        print(userrequest)
         userrequest = int(userrequest.pk)
         requestlast = Request.objects.filter(~Q(status='3'), ~Q(status='4')).reverse().first()
-        print(requestlast)
         requestlast = int(requestlast.pk)
         if userrequest - requestlast == 0:
             numrequest = int(numrequest) - 1
@@ -55,12 +55,13 @@ def createOrder(request, int):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     maintype = int
     equipments = Equipment.objects.filter(responsible=request.user)
+    laboratories = User.objects.filter(groups__name='Preventive_Maintenance')
     if request.method == "POST":
         comments = request.POST.get('comments', None)
         req = Request()
         req.user = request.user
         req.request_type = maintype
-        if maintype == '1' or maintype == '6':
+        if maintype == '1':
             slequipment = request.POST.get('slequipment', None)
             if slequipment == '3':
                 print('hola')
@@ -68,15 +69,23 @@ def createOrder(request, int):
                 req.equipment_id = Equipment(id=slequipment)
         req.status = '1'
         req.comments = comments
+        if maintype == '7':
+            laboratory = request.POST.get('laboratory', None)
+            laboratory = User.objects.get(id=laboratory)
+            req.user = laboratory
+            req.comments += ' | request create by: '+ request.user.get_full_name()
+
         req.save()
-        poll = Poll()
-        poll.request_id = req
-        poll.status = 1
-        poll.save()
+        if maintype != '7':
+            poll = Poll()
+            poll.request_id = req
+            poll.status = 1
+            poll.save()
         messages.warning(request, 'Do not forget do the poll when the technical finishes the service!')
         messages.success(request, 'Your order was created successfully!')
         return redirect('ordermanager:principal')
-    return render(request, 'createOrder.html', {'requests': requests, 'maintype': maintype, 'equipments': equipments})
+    return render(request, 'createOrder.html', {'requests': requests, 'maintype': maintype, 'equipments': equipments,
+                                                'laboratories':laboratories})
 
 
 @login_required()
@@ -354,6 +363,7 @@ def orderPending(request):
 def orderSupport(request, pk):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     principal_request = get_object_or_404(Request, pk=pk)
+    equipments = Equipment.objects.filter(responsible= principal_request.user)
     if request.method == "GET":
         principal_request.status = '2'
         principal_request.technical = request.user
@@ -364,10 +374,18 @@ def orderSupport(request, pk):
         principal_request.status = '4'
         principal_request.observations = observations
         principal_request.date_done = datetime.now()
-        messages.success(request, 'The order is done!')
+        if principal_request.request_type == '7':
+            equipment = request.POST.get('equipment', None)
+            if equipment == '3':
+                print('hola')
+            else:
+                equipment = Equipment.objects.get(id=equipment)
+                principal_request.equipment_id = equipment
         principal_request.save()
+        messages.success(request, 'The order is done!')
         return redirect('ordermanager:orderPending')
-    return render(request, 'orderSupport.html', {'requests': requests, 'principal_request': principal_request})
+    return render(request, 'orderSupport.html', {'requests': requests, 'principal_request': principal_request,
+                                                 'equipments':equipments})
 
 
 @login_required()
@@ -409,9 +427,11 @@ def comment(request):
 def orderCancel(request, pk):
     principal_request = get_object_or_404(Request, pk=pk)
     if request.method == "POST":
+        observations = request.POST.get('observations', None)
         principal_request.status = '3'
         principal_request.technical = request.user
         principal_request.date_cancel = datetime.now()
+        principal_request.observations = observations
         principal_request.save()
         messages.error(request, 'The order was Canceled successfully!')
         return redirect('ordermanager:orderPending')
@@ -423,9 +443,11 @@ def orderCancel(request, pk):
 def orderPause(request, pk):
     principal_request = get_object_or_404(Request, pk=pk)
     if request.method == "POST":
+        observations = request.POST.get('observations', None)
         principal_request.status = '5'
         principal_request.technical = request.user
         principal_request.date_pause = datetime.now()
+        principal_request.observations = observations
         principal_request.save()
         messages.info(request, 'The order is on Pause!')
         return redirect('ordermanager:orderPending')
@@ -479,6 +501,7 @@ def OrderObservations(request):
 def orderShow(request, pk):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     principal_request = get_object_or_404(Request, pk=pk)
+
     return render(request, 'order_show.html', {'requests': requests, 'principal_request': principal_request})
 
 
@@ -510,9 +533,11 @@ def MaintenanceSupport(request, pk):
 def MaintenanceCancel(request, pk):
     principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
     if request.method == "POST":
+        observations = request.POST.get('observations', None)
         principal_request.status = '3'
         principal_request.technical = request.user
         principal_request.date_cancel = datetime.now()
+        principal_request.observations = observations
         principal_request.save()
         messages.error(request, 'The maintenance was Canceled successfully!')
         return redirect('ordermanager:orderPending')
@@ -533,6 +558,8 @@ def MaintenancePause(request, pk):
     return render(request, 'maintenance_pause.html', {'principal_request': principal_request})
 
 
+@login_required()
+@permission_required('ordermanager.add_request')
 def MaintenanceShow(request, pk):
     requests = Request.objects.filter(~Q(status='3'), ~Q(status='4'), user=request.user)
     principal_request = get_object_or_404(Preventive_Maintenance, pk=pk)
@@ -768,4 +795,21 @@ def Poll_satisfaction(request):
         'tres_veryUnsatisfied': tres_veryUnsatisfied,
         'cuatro_veryUnsatisfied': cuatro_veryUnsatisfied,
         'cinco_veryUnsatisfied': cinco_veryUnsatisfied
+    })
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('ordermanager:principal')
+        elif not form.is_valid():
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
     })

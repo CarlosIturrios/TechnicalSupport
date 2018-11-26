@@ -38,7 +38,7 @@
                                 {% for principal_request in principal_requests %}
                                     <tr>
                                         <td>
-                                            <a class="btn btn-primary"
+                                            <a class="btn btn-warning"
                                                href="{% url 'ordermanager:orderSupport' principal_request.pk %}">{{ principal_request.id }}</a>
                                         </td>
                                         <td>{{ principal_request.user.get_full_name }}</td>
@@ -87,7 +87,7 @@
                             <tbody>
                             {% for admin_request in admin_requests %}
                                 <tr>
-                                    <td><a class="btn btn-primary"
+                                    <td><a class="btn btn-warning"
                                            href="{% url 'ordermanager:orderSupport' admin_request.pk %}">{{ admin_request.id }}</a>
                                     </td>
                                     <td>{{ admin_request.user.get_full_name }}</td>
@@ -139,7 +139,7 @@
                                 {% for pause_request in pause_requests %}
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info"
+                                            <a class="btn btn-info" style="background-color: #0275BA"
                                                href="{% url 'ordermanager:orderSupport' pause_request.pk %}">{{ pause_request.id }}</a>
                                         </td>
                                         <td>{{ pause_request.user.get_full_name }}</td>
@@ -192,7 +192,7 @@
                                 {% for maintenance in maintenances %}
                                     <tr>
                                         <td>
-                                            <a class="btn btn-primary"
+                                            <a class="btn btn-warning"
                                             href="{% url 'ordermanager:MaintenanceSupport' maintenance.pk %}"
                                             >{{ maintenance.id }}</a>
                                         </td>
@@ -211,7 +211,7 @@
                                 {% for maintenance_pause in maintenances_pause %}
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info"
+                                            <a class="btn btn-primary"
                                             href="{% url 'ordermanager:MaintenanceSupport' maintenance_pause.pk %}"
                                             >{{ maintenance_pause.id }}</a>
                                         </td>
@@ -234,5 +234,5 @@
             {% endif %}
         </div>
     </div>
-    <script>setTimeout('document.location.reload()', 9000); </script>
+    <script>setTimeout('document.location.reload()', 20000); </script>
 {% endblock %}                
